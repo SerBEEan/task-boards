@@ -1,0 +1,38 @@
+.tag {
+    width: 40rem;
+    height: 18rem;
+    border-radius: 2rem;
+}
+
+.tagViolet {
+    background-color: #EEE1FD;
+}
+
+/* в макете это green */
+.tagMint {
+    background-color: #BAF8CF;
+}
+
+.tagRed {
+    background-color: #FED6CC;
+}
+
+.tagOrange {
+    background-color: #FFDCB6;
+}
+
+.tagBlue {
+    background-color: #B8E6FF;
+}
+
+.tagGreen {
+    background-color: #D8FCB0;
+}
+
+.tagDarkBlue {
+    background-color: #C6D9FF;
+}
+
+.tagYellow {
+    background-color: #FFF4C7;
+}
