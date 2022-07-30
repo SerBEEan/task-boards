@@ -1,0 +1,43 @@
+.checkbox {
+    font-size: 16rem;
+    padding-left: 1.5em;
+    user-select: none;
+}
+
+.checkbox input {
+    position: absolute;
+    z-index: -1;
+    opacity: 0;
+}
+
+.checkbox label {
+    display: flex;
+    align-items: center;
+}
+
+.box {
+    position: absolute;
+    margin-left: -1.5em;
+    width: 1.125em;
+    height: 1.125em;
+    background-color: white;
+    border: 0.0625em solid #CACACA;
+    border-radius: 0.125em;
+    box-shadow: 0px 0.0625em 0.125em rgba(0, 0, 0, 0.12);
+
+    background-repeat: no-repeat;
+    background-size: 0.625em, 0.49em;
+    background-position: center;
+}
+
+input:checked + .box {
+    background-image: url("data:image/svg+xml,%3Csvg width='10' height='9' viewBox='0 0 10 9' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3.33333 8.19166L0 4.85833L1.175 3.68333L3.33333 5.83333L8.825 0.34166L10 1.52499L3.33333 8.19166Z' fill='%23292929'/%3E%3C/svg%3E%0A");
+}
+
+input:focus + .box {
+    box-shadow: 0 0 0 0.15em rgba(0, 123, 255, 0.25);
+}
+
+input:disabled + .box {
+    background-color: #CACACA;
+}
