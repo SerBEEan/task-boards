@@ -1,8 +1,4 @@
 .tag {
-    /* 40px */
-    width: 2.5em;
-    /* 18px */
-    height: 1.125em;
     /* 2px */
     border-radius: 0.125em;
     /* 3px 6px */
@@ -24,6 +20,22 @@
     width: 0.5em;
     height: 0.5em;
 }
+
+/* size */
+
+.sizeS {
+    /* 40px 18px */
+    width: 2.5em;
+    height: 1.125em;
+}
+
+.sizeM {
+    /* 60px 24px */
+    width: 3.75em;
+    height: 1.5em;
+}
+
+/* color */
 
 .tagViolet {
     background-color: #EEE1FD;

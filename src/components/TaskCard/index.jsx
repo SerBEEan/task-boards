@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import Tag from '../Tag';
+import Tag, { Size as TagSize } from '../Tag';
 import Button, { Size, Shape, Type } from '../Button';
 
 import {ReactComponent as IconMore} from '../../Icons/more.svg';
@@ -16,7 +16,7 @@ export default function TaskCard({ title, tags = [], block = false }) {
                 <span className={styles.cardTitle}>{title}</span>
                 <div className={styles.cardContent}>
                     {tags.map((tag) => (
-                        <Tag key={tag.id} color={tag.color} />
+                        <Tag key={tag.id} color={tag.color} size={TagSize.s} />
                     ))}
                 </div>
             </div>

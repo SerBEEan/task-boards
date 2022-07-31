@@ -16,17 +16,30 @@ const COLOR_MAP = {
     yellow: styles.tagYellow,
 };
 
+const SIZE_MAP = {
+    s: styles.sizeS,
+    m: styles.sizeM,
+};
+
 export const Color = getEnum(Object.keys(COLOR_MAP));
+export const Size = getEnum(Object.keys(SIZE_MAP));
 
 export default function Tag(props) {
     const {
         color,
         deleteIcon = <IconClose />,
         onDelete,
+        size = Size.m,
     } = props;
 
     return (
-        <div className={classNames(styles.tag, COLOR_MAP[color] ?? COLOR_MAP.violet)}>
+        <div
+            className={classNames(
+                styles.tag,
+                COLOR_MAP[color] ?? COLOR_MAP.violet,
+                SIZE_MAP[size] ?? Size.m
+            )}
+        >
             {onDelete && (
                 <span className={styles.deleteIcon}>
                     {deleteIcon}
