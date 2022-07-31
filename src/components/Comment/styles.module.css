@@ -1,0 +1,24 @@
+.comment {
+    font-size: 16rem;
+}
+
+.commentHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* 14px */
+    font-size: 0.875em;
+    font-weight: 500;
+    /* 6px */
+    margin-bottom: 0.375em;
+    /* 20px */
+    line-height: 0.9375em;
+}
+
+.commentBody {
+    color: #565656;
+    /* 12px */
+    font-size: 0.75em;
+    /* 24px */
+    line-height: 1.5em;
+}
