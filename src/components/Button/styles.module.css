@@ -54,8 +54,8 @@
 }
 
 .typeText {
-    --bg-color: #FFFFFF;
-    --bg-color-hover: #F2F2F2;
+    --bg-color: none;
+    --bg-color-hover: #E0E0E0;
 }
 
 .typeOutlined {
