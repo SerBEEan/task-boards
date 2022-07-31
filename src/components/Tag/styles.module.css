@@ -1,7 +1,28 @@
 .tag {
-    width: 40rem;
-    height: 18rem;
-    border-radius: 2rem;
+    /* 40px */
+    width: 2.5em;
+    /* 18px */
+    height: 1.125em;
+    /* 2px */
+    border-radius: 0.125em;
+    /* 3px 6px */
+    padding: 0.1875em 0.375em;
+    user-select: none;
+}
+
+.deleteIcon {
+    cursor: pointer;
+    display: none;
+    justify-content: end;
+}
+
+.tag:hover .deleteIcon {
+    display: flex;
+}
+
+.deleteIcon * {
+    width: 0.5em;
+    height: 0.5em;
 }
 
 .tagViolet {
