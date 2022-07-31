@@ -1,0 +1,113 @@
+.button {
+    --shadow: none;
+    
+    display: inline-flex;
+    align-items: center;
+
+    font-size: 14rem;
+    border: none;
+
+    color: var(--color);
+
+    background-color: var(--bg-color);
+    box-shadow: var(--shadow);
+
+    cursor: pointer;
+    transition: .3s;
+}
+
+.button:hover {
+    background-color: var(--bg-color-hover);
+}
+
+.button:active {
+    box-shadow: rgb(0 0 0 / 20%) 0 0.375em 0.75em;
+}
+
+.fullWitch {
+    width: 100%;
+    justify-content: center;
+}
+
+.iconContainer {
+    display: flex;
+}
+
+.iconContainer > * {
+    /* 14px */
+    height: 0.875em;
+    width: 0.875em;
+}
+
+
+/* Типы */
+
+.typeDefault {
+    --bg-color: #FFFFFF;
+    --bg-color-hover: #F2F2F2;
+    --shadow: 0 0.0625em 0.125em rgba(0, 0, 0, 0.12);
+}
+
+.typePrimary {
+    --bg-color: #FFE445;
+    --bg-color-hover: #fae670;
+}
+
+.typeText {
+    --bg-color: #FFFFFF;
+    --bg-color-hover: #F2F2F2;
+}
+
+.typeOutlined {
+    --bg-color: #FFFFFF;
+    --bg-color-hover: #F2F2F2;
+    /* 1px */
+    border: 0.0625em solid #929292;
+}
+
+/* Размеры */
+
+.sizeXs {
+    /* 4px */
+    padding: 0.25em;
+}
+
+.sizeS {
+    /* 8px 12px */
+    padding: 0.5em 0.75em;
+}
+
+.sizeM {
+    /* 12.5px 36.5px */
+    padding: 0.78125em 2.28125em;
+}
+
+.sizeL {
+    /* 14px 40px */
+    padding: 0.875em 2.5em;
+}
+
+/* Формы */
+
+.shapeDefault {
+    /* 5px */
+    border-radius: 0.3125em;
+}
+
+.shapeCircle {
+    border-radius: 50%;
+}
+
+/* Цвета */
+
+.colorDefault {
+    --color: #000;
+}
+
+.colorDisabled {
+    --color: #929292;
+}
+
+.colorDisabled, .colorDisabled .iconContainer * {
+    stroke: var(--color);
+}
