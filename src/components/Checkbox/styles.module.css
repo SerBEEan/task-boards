@@ -3,6 +3,7 @@
     --gutter: 1.5em;
 
     display: inline-block;
+    position: relative;
     font-size: 16rem;
     padding-left: var(--gutter);
     user-select: none;
