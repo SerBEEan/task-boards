@@ -1,24 +1,35 @@
 .tag {
+    /* 3px 6px */
+    --p-y: 0.1875em;
+    --p-x: 0.375em;
+    --icon-w: 0.5em;
+    --icon-h: 0.5em;
+
     /* 2px */
     border-radius: 0.125em;
-    /* 3px 6px */
-    padding: 0.1875em 0.375em;
+    padding: var(--p-y) var(--p-x);
     user-select: none;
+    position: relative;
 }
 
 .deleteIcon {
     cursor: pointer;
     display: none;
-    justify-content: end;
+    position: absolute;
+    top: 0.1875em;
+    left: calc(100% - var(--icon-w) - var(--p-x));
+    right: 0;
+    bottom: 0;
 }
 
 .tag:hover .deleteIcon {
-    display: flex;
+    display: inline-flex;
+
 }
 
 .deleteIcon * {
-    width: 0.5em;
-    height: 0.5em;
+    width: var(--icon-w);
+    height: var(--icon-h);
 }
 
 /* size */
@@ -68,4 +79,8 @@
 
 .tagYellow {
     background-color: #FFF4C7;
+}
+
+.fullWidth {
+    width: 100%;
 }

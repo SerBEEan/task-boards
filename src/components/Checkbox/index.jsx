@@ -14,7 +14,8 @@ export default function Checkbox(props) {
         checked,
         disabled,
         onChange,
-        labelPlacement = LabelPlacement.right
+        labelPlacement = LabelPlacement.right,
+        block = false,
     } = props;
 
     const changeCheck = (e) => {
@@ -22,7 +23,13 @@ export default function Checkbox(props) {
     };
 
     return (
-        <div className={classNames(styles.checkbox, {[styles.labelPlacementLeft]: labelPlacement === LabelPlacement.left} )}>
+        <div
+            className={classNames(
+                styles.checkbox,
+                {[styles.labelPlacementLeft]: labelPlacement === LabelPlacement.left},
+                {[styles.fullWidth]: block}
+            )}
+        >
             <label>
                 <input
                     type="checkbox"

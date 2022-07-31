@@ -30,6 +30,7 @@ export default function Tag(props) {
         deleteIcon = <IconClose />,
         onDelete,
         size = Size.m,
+        block = false,
     } = props;
 
     return (
@@ -37,7 +38,8 @@ export default function Tag(props) {
             className={classNames(
                 styles.tag,
                 COLOR_MAP[color] ?? COLOR_MAP.violet,
-                SIZE_MAP[size] ?? Size.m
+                SIZE_MAP[size] ?? Size.m,
+                {[styles.fullWidth]: block}
             )}
         >
             {onDelete && (
