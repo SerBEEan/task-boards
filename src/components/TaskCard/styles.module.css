@@ -1,0 +1,46 @@
+.taskCard {
+    font-size: 16rem;
+
+    display: flex;
+    justify-content: space-between;
+    border-radius: 0.375em;
+    box-shadow: 0 0.0625em 0.0125em rgba(0, 0, 0, 0.12);
+    background-color: #FFFFFF;
+
+    /* 256px */
+    width: 16em;
+    /* 12px */
+    padding: 0.75em;
+}
+
+.cardTitle {
+    display: inline-block;
+    /* 10px */
+    margin-bottom: 0.625em;
+}
+
+.cardContent {
+    display: flex;
+    flex-wrap: wrap;
+    /* 6px */
+    gap: 0.375em;
+}
+
+.cardActions {
+    /* 6px */
+    margin-left: 0.0325em;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+
+.cardGroupActions {
+    display: flex;
+}
+
+.cardGroupActions > button:first-child {
+    /* 2px */
+    margin-right: 0.125em;
+}
