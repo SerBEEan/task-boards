@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import Tag from '../Tag';
 import Button, { Size, Shape, Type } from '../Button';
 
@@ -8,9 +9,9 @@ import {ReactComponent as IconComment} from '../../Icons/comment.svg';
 import styles from './styles.module.css';
 
 
-export default function TaskCard({ title, tags = [] }) {
+export default function TaskCard({ title, tags = [], block = false }) {
     return (
-        <div className={styles.taskCard}>
+        <div className={classNames(styles.taskCard, {[styles.fullWidth]: block})}>
             <div>
                 <span className={styles.cardTitle}>{title}</span>
                 <div className={styles.cardContent}>
