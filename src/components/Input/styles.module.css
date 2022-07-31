@@ -1,0 +1,30 @@
+.input, textarea {
+    font-size: 16rem;
+    /* 12px */
+    padding: 0.75em;
+    box-shadow: 0px 0.0625em 0.125em rgba(0, 0, 0, 0.12);
+    border: none;
+    /* 4px */
+    border-radius: 0.25em;
+}
+
+.fullWidth {
+    width: 100%;
+}
+
+.textarea {
+    resize: none;
+    /* 150px */
+    height: 9.375em;
+}
+
+textarea::-webkit-scrollbar {
+    width: 7px;
+    background-color: #D9D9D9;
+    border-radius: 12px;
+}
+  
+textarea::-webkit-scrollbar-thumb {
+    border-radius: 12px;
+    background-color: #A9A9A9;
+}
