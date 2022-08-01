@@ -35,8 +35,13 @@ export default function SelectTags({ options = [], block = false, value = [], on
     useEffect(() => {
         const listener = (e) => {
             if (!e.path.includes(buttonRef.current)) {
-                setIsOpen(false);
-                onChange?.(Object.keys(selected));
+                setIsOpen((prev) => {
+                    if (prev) {
+                        onChange?.(Object.keys(selected));
+                    }
+
+                    return false;
+                });
             }
         };
 
