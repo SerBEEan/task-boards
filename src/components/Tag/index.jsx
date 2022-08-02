@@ -43,7 +43,7 @@ export default function Tag(props) {
             )}
         >
             {onDelete && (
-                <span className={styles.deleteIcon}>
+                <span className={styles.deleteIcon} onClick={onDelete}>
                     {deleteIcon}
                 </span>
             )}
