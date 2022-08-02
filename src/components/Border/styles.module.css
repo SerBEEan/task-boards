@@ -1,0 +1,9 @@
+.border {
+    width: min-content;
+    /* 14px */
+    padding: 0.875em;
+    /* 1px */
+    border: 0.0625em solid #CACACA;
+    /* 8px */
+    border-radius: 0.5em;
+}
