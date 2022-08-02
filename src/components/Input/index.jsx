@@ -17,13 +17,17 @@ export default function Input(props) {
         onChange,
     } = props;
 
+    const changeValue = (e) => {
+        onChange?.(e.target.value);
+    };
+
     if (type === Type.input) {
         return (
             <input
                 className={classNames(styles.input, {[styles.fullWidth]: block})}
                 placeholder={placeholder}
                 value={value}
-                onChange={onChange}
+                onChange={changeValue}
             />
         );
     }
@@ -33,7 +37,7 @@ export default function Input(props) {
             className={classNames(styles.textarea, {[styles.fullWidth]: block})}
             placeholder={placeholder}
             value={value}
-            onChange={onChange}
+            onChange={changeValue}
         />
     );
 }
