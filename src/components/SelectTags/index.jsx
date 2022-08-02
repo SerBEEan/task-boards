@@ -2,14 +2,15 @@ import { useState, useEffect, useRef } from 'react';
 import classNames from 'classnames';
 import Checkbox, { LabelPlacement } from '../Checkbox';
 import Tag from '../Tag';
-
 import { getEnum } from '../../utils/getEnum';
 
 import styles from './styles.module.css';
 
-export default function SelectTags({ options = [], block = false, value = [], onChange }) {
+export default function SelectTags(props) {
+    const { options = [], block = false, value = [], onChange } = props;
+
     const [isOpen, setIsOpen] = useState(false);
-    const buttonRef = useRef();
+    const buttonRef = useRef(null);
 
     const [selected, setSelected] = useState(getEnum(value));
 
@@ -35,13 +36,10 @@ export default function SelectTags({ options = [], block = false, value = [], on
     useEffect(() => {
         const listener = (e) => {
             if (!e.path.includes(buttonRef.current)) {
-                setIsOpen((prev) => {
-                    if (prev) {
-                        onChange?.(Object.keys(selected));
-                    }
-
-                    return false;
-                });
+                if (isOpen) {
+                    setIsOpen(false);
+                    onChange?.(Object.keys(selected));
+                }
             }
         };
 
@@ -50,7 +48,17 @@ export default function SelectTags({ options = [], block = false, value = [], on
         return () => {
             document.removeEventListener('click', listener);
         };
-    }, [selected, onChange]);
+    }, [selected, onChange, isOpen]);
+
+    useEffect(() => {
+        setSelected((prev) => {
+            if (Object.keys(prev).toString() === value.toString()) {
+                return prev;
+            }
+
+            return getEnum(value);
+        });
+    }, [value]);
 
     return (
         <div
@@ -64,7 +72,7 @@ export default function SelectTags({ options = [], block = false, value = [], on
                 <ul className={styles.selectOptions}>
                     {options.map((option, i) => (
                         <li
-                            key={option.color + i}
+                            key={option.color}
                             className={styles.selectOption}
                             onClick={(e) => clickItem(e, option.color)}
                         >
