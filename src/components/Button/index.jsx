@@ -43,6 +43,7 @@ export default function Button(props) {
         shape = Shape.default,
         block = false,
         color = Color.default,
+        onClick,
     } = props;
 
     return (
@@ -56,6 +57,7 @@ export default function Button(props) {
                 {[styles.fullWitch]: block}
             )}
             style={{ gap: gutter }}
+            onClick={onClick}
         >
             {icon && (
                 <span className={styles.iconContainer}>
