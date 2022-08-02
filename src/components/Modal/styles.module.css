@@ -40,6 +40,8 @@
     font-weight: 500;
     /* 14px */
     margin-bottom: 0.875em;
+    /* 8px */
+    margin-left: 0.5em;
 }
 
 .closeIcon {

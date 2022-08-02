@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import classNames from 'classnames';
 import { ModalContainer } from './Container';
 import Button, { Shape, Size, Type as ButtonType } from '../Button';
@@ -24,24 +25,26 @@ export default function Modal(props) {
         cancelText = 'Нет',
     } = props;
 
+    const backgroundRef = useRef(null);
+
     const closeModal = () => {
         onClose?.();
     };
 
-    const clickOnContent = (e) => {
-        e.stopPropagation();
+    const closeOnBackground = (e) => {
+        if (e.target === backgroundRef.current) {
+            onClose?.();
+        }
     };
 
     return (
         <ModalContainer isShow={isShow}>
             <div
                 className={classNames(styles.background, {[styles.visible]: isShow})}
-                onClick={closeModal}
+                ref={backgroundRef}
+                onClick={closeOnBackground}
             >
-                <div
-                    className={classNames(styles.content, {[styles.typeConfirm]: type === Type.confirm})}
-                    onClick={clickOnContent}
-                >
+                <div className={classNames(styles.content, {[styles.typeConfirm]: type === Type.confirm})}>
                     {title && (
                         <span className={styles.title}>{title}</span>
                     )}
