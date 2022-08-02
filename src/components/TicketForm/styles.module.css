@@ -1,0 +1,15 @@
+.formContent {
+    /* 336px */
+    width: 21em;
+    display: flex;
+    flex-direction: column;
+    /* 14px */
+    gap: 0.875em;
+}
+
+.selectedTags {
+    display: flex;
+    flex-wrap: wrap;
+    /* 8px */
+    gap: 0.5em;
+}
