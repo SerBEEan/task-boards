@@ -1,0 +1,19 @@
+.column {
+    /* 288px */
+    width: 18em;
+}
+
+.title {
+    font-weight: 500;
+    /* 14px */
+    margin-bottom: 0.875em;
+    /* 28px */
+    padding-left: 1.75em;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    /* 10px */
+    gap: 0.625em;
+}
