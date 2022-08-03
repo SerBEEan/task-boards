@@ -1,0 +1,32 @@
+.content {
+    /* 472px */
+    width: 29.5em;
+}
+
+.content button:last-child {
+    align-self: center;
+}
+
+.contentHeader {
+    /* 28px */
+    padding: 0 1.75em;
+    /* 14px */
+    margin-bottom: 0.875em;
+    display: flex;
+    justify-content: space-between;
+}
+
+.contentHeader > span {
+    font-weight: 500;
+}
+
+.trigger {
+    /* 8px */
+    padding: 0.5em;
+}
+
+.trigger * {
+    /* 16px */
+    width: 1em;
+    height: 1em;
+}
