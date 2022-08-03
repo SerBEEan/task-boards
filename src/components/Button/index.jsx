@@ -1,3 +1,4 @@
+import { forwardRef } from 'react';
 import classNames from 'classnames';
 import { getEnum } from '../../utils/getEnum';
 
@@ -33,7 +34,7 @@ export const Shape = getEnum(Object.keys(SHAPE_MAP));
 export const Color = getEnum(Object.keys(COLOR_MAP));
 
 
-export default function Button(props) {
+function Button(props, ref) {
     const {
         children,
         size = Size.m,
@@ -58,6 +59,7 @@ export default function Button(props) {
                 {[styles.fullWitch]: block},
                 className
             )}
+            ref={ref}
             style={{ gap: gutter }}
             onClick={onClick}
         >
@@ -70,3 +72,5 @@ export default function Button(props) {
         </button>
     );
 }
+
+export default forwardRef(Button);
