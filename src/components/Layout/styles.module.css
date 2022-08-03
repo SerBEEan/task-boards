@@ -1,0 +1,10 @@
+.layout {
+    /* 36px 136px */
+    padding: 2.25em 0 0 8.5em;
+    width: min-content;
+}
+
+.header {
+    /* 64px */
+    margin-bottom: 4em;
+}
