@@ -9,7 +9,15 @@ import {ReactComponent as IconComment} from '../../Icons/comment.svg';
 import styles from './styles.module.css';
 
 
-export default function TaskCard({ title, tags = [], block = false }) {
+export default function TicketCard(props) {
+    const {
+        title,
+        tags = [],
+        block = false,
+        hasDescription = false,
+        hasComment = false,
+    } = props;
+
     return (
         <div className={classNames(styles.taskCard, {[styles.fullWidth]: block})}>
             <div>
@@ -23,9 +31,9 @@ export default function TaskCard({ title, tags = [], block = false }) {
 
             <div className={styles.cardActions}>
                 <Button icon={<IconMore />} size={Size.xs} shape={Shape.circle} type={Type.text} />
-                <div className={styles.cardGroupActions}>
-                    <Button icon={<IconAttention />} size={Size.xs} shape={Shape.circle} type={Type.text} />
-                    <Button icon={<IconComment />} size={Size.xs} shape={Shape.circle} type={Type.text} />
+                <div className={styles.cardIndicators}>
+                    {hasDescription && <IconAttention />}
+                    {hasComment && <IconComment />}
                 </div>
             </div>
         </div>
