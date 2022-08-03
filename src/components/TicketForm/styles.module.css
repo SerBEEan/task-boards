@@ -13,3 +13,7 @@
     /* 8px */
     gap: 0.5em;
 }
+
+.fullWidth {
+    width: 100%;
+}
