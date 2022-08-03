@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import classNames from 'classnames';
 import Tag, { Size as TagSize } from '../Tag';
 import Button, { Size, Shape, Type } from '../Button';
@@ -16,10 +17,20 @@ export default function TicketCard(props) {
         block = false,
         hasDescription = false,
         hasComment = false,
+        selectCurrentTicket,
     } = props;
 
+    const moreRef = useRef(null);
+
+    const clickCard = (e) => {
+        const clickedIsOnButtonMore = e.nativeEvent.path.includes(moreRef.current);
+        if (!clickedIsOnButtonMore) {
+            selectCurrentTicket?.(1);
+        }
+    };
+
     return (
-        <div className={classNames(styles.taskCard, {[styles.fullWidth]: block})}>
+        <div className={classNames(styles.taskCard, {[styles.fullWidth]: block})} onClick={clickCard}>
             <div>
                 <span className={styles.cardTitle}>{title}</span>
                 <div className={styles.cardContent}>
@@ -30,7 +41,7 @@ export default function TicketCard(props) {
             </div>
 
             <div className={styles.cardActions}>
-                <Button icon={<IconMore />} size={Size.xs} shape={Shape.circle} type={Type.text} />
+                <Button ref={moreRef} icon={<IconMore />} size={Size.xs} shape={Shape.circle} type={Type.text} />
                 <div className={styles.cardIndicators}>
                     {hasDescription && <IconAttention />}
                     {hasComment && <IconComment />}

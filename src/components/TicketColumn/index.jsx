@@ -4,7 +4,7 @@ import { Color } from '../Tag';
 
 import styles from './styles.module.css';
 
-export default function TicketColumn({ title, button }) {
+export default function TicketColumn({ title, button, selectCurrentTicket }) {
     return (
         <div className={styles.column}>
             <div className={styles.title}>
@@ -24,6 +24,7 @@ export default function TicketColumn({ title, button }) {
                             { id: 6, color: Color.dark },
                             { id: 7, color: Color.yellow },
                         ]}
+                        selectCurrentTicket={selectCurrentTicket}
                         block
                         hasDescription
                         hasComment
@@ -40,6 +41,7 @@ export default function TicketColumn({ title, button }) {
                             { id: 6, color: Color.dark },
                             { id: 7, color: Color.yellow },
                         ]}
+                        selectCurrentTicket={selectCurrentTicket}
                         block
                         hasDescription
                         hasComment
