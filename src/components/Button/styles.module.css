@@ -4,6 +4,7 @@
     display: inline-flex;
     align-items: center;
 
+    width: max-content;
     font-size: 14rem;
     border: none;
 

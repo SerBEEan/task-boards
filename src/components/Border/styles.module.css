@@ -7,3 +7,7 @@
     /* 8px */
     border-radius: 0.5em;
 }
+
+.fullWidth {
+    width: 100%;
+}
