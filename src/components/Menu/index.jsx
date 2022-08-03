@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import classNames from 'classnames';
-import Button, { Shape, Size, Type } from '../Button';
+import Button, { Shape, Size, Type, Color } from '../Button';
 
 import {ReactComponent as IconClose} from '../../Icons/close.svg';
 
@@ -41,7 +41,14 @@ export default function Menu({ children, trigger }) {
             </div>    
             <div className={classNames(styles.menu, {[styles.menuShow]: isOpen})}>
                 <div className={styles.buttonClose}>
-                    <Button size={Size.xs} shape={Shape.circle} type={Type.text} icon={<IconClose />} onClick={closeMenu} />
+                    <Button
+                        size={Size.xs}
+                        shape={Shape.circle}
+                        type={Type.text}
+                        color={Color.disabled}
+                        icon={<IconClose />}
+                        onClick={closeMenu}
+                    />
                 </div>
                 {children}
             </div>
