@@ -1,0 +1,54 @@
+.container {
+    position: relative;
+}
+
+.menu {
+    /* 4px */
+    --padding: 0.25em;
+
+    visibility: hidden;
+    transform: scale(0);
+    transform-origin: top right;
+    transition: .25s;
+    
+    position: absolute;
+    right: calc(var(--padding) * -1);
+    top: calc(var(--padding) * -1);
+    
+    background-color: #FFFFFF;
+    box-shadow: 0.125em 0.1875em 0.3125em rgba(0, 0, 0, 0.12);
+    /* 6px */
+    border-radius: 0.375em;
+    padding: var(--padding) 0;
+}
+
+.menuShow {
+    visibility: visible;
+    transform: scale(1);
+}
+
+.buttonClose {
+    position: absolute;
+    right: var(--padding);
+    top: var(--padding);
+}
+
+.menuItem {
+    /* 14px */
+    font-size: 0.875em;
+    background: none;
+    border: none;
+    /* 8px 16px */
+    padding: 0.5em 1em;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+}
+
+.menuItem:hover {
+    background-color: #E0E0E0;
+}
+
+.menuItem:active {
+    box-shadow: rgb(0 0 0 / 20%) 0 0.375em 0.75em;
+}
