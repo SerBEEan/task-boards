@@ -14,6 +14,7 @@ export default function TicketForm(props) {
     const {
         block = false,
         isAddForm = false,
+        isEditMode = true,
         onSave,
     } = props;
 
@@ -61,6 +62,7 @@ export default function TicketForm(props) {
                     block
                     value={title}
                     onChange={changeTitle}
+                    disabled={!isEditMode}
                 />
                 <Input
                     placeholder="Описание"
@@ -68,54 +70,61 @@ export default function TicketForm(props) {
                     block
                     value={description}
                     onChange={changeDescription}
+                    disabled={!isEditMode}
                 />
 
                 {selectedColors.length > 0 && (
                     <div className={styles.selectedTags}>
                         {selectedColors.map((color) => (
-                            <Tag key={color} color={color} onDelete={deleteTag.bind(null, color)} />
+                            <Tag key={color} color={color} onDelete={isEditMode ? deleteTag.bind(null, color) : undefined} />
                         ))}
                     </div>
                 )}
 
-                <SelectTags
-                    options={[
-                        { color: Color.violet },
-                        { color: Color.mint },
-                        { color: Color.red },
-                        { color: Color.orange },
-                        { color: Color.blue },
-                        { color: Color.green },
-                        { color: Color.dark },
-                        { color: Color.yellow },
-                    ]}
-                    value={selectedColors}
-                    onChange={changeSelectedColors}
-                />
+                {isEditMode && (
+                    <SelectTags
+                        options={[
+                            { color: Color.violet },
+                            { color: Color.mint },
+                            { color: Color.red },
+                            { color: Color.orange },
+                            { color: Color.blue },
+                            { color: Color.green },
+                            { color: Color.dark },
+                            { color: Color.yellow },
+                        ]}
+                        value={selectedColors}
+                        onChange={changeSelectedColors}
+                    />
+                )}
 
-                {!isAddForm && (
+                {comments.map((comment) => (
+                    <Comment
+                        key={comment.id}
+                        author={comment.author}
+                        onDelete={deleteComment.bind(null, comment.id)}
+                    >
+                        {comment.content}
+                    </Comment>
+                ))} 
+
+                {(!isAddForm && isEditMode) && (
                     <>
-                        {comments.map((comment) => (
-                            <Comment
-                                key={comment.id}
-                                author={comment.author}
-                                onDelete={deleteComment.bind(null, comment.id)}
-                            >
-                                {comment.content}
-                            </Comment>
-                        ))}
+                        
                         <AddComment onSave={addComment} />
                     </>
                 )}
 
-                <Button
-                    size={Size.l}
-                    type={ButtonType.primary}
-                    block={isAddForm}
-                    onClick={saveForm}
-                >
-                    Сохранить
-                </Button>
+                {isEditMode && (
+                    <Button
+                        size={Size.l}
+                        type={ButtonType.primary}
+                        block={isAddForm}
+                        onClick={saveForm}
+                    >
+                        Сохранить
+                    </Button>
+                )}
             </div>
         </Border>
     );

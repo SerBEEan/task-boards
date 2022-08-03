@@ -15,6 +15,7 @@ export default function Input(props) {
         placeholder,
         value,
         onChange,
+        disabled,
     } = props;
 
     const changeValue = (e) => {
@@ -28,6 +29,7 @@ export default function Input(props) {
                 placeholder={placeholder}
                 value={value}
                 onChange={changeValue}
+                disabled={disabled}
             />
         );
     }
@@ -38,6 +40,7 @@ export default function Input(props) {
             placeholder={placeholder}
             value={value}
             onChange={changeValue}
+            disabled={disabled}
         />
     );
 }
