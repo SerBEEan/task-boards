@@ -44,6 +44,7 @@ export default function Button(props) {
         block = false,
         color = Color.default,
         onClick,
+        className,
     } = props;
 
     return (
@@ -54,7 +55,8 @@ export default function Button(props) {
                 TYPE_MAP[type],
                 SHAPE_MAP[shape],
                 COLOR_MAP[color],
-                {[styles.fullWitch]: block}
+                {[styles.fullWitch]: block},
+                className
             )}
             style={{ gap: gutter }}
             onClick={onClick}
