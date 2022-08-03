@@ -1,0 +1,12 @@
+.header {
+    display: flex;
+    /* 28px */
+    gap: 1.75em;
+}
+
+.content {
+    display: flex;
+    /* 12px */
+    gap: 0.75em;
+    flex-wrap: wrap;
+}
