@@ -110,7 +110,6 @@ export default function TicketForm(props) {
 
                 {(!isAddTicketForm && isEditMode) && (
                     <>
-                        
                         <AddComment onSave={addComment} />
                     </>
                 )}
