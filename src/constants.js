@@ -5,4 +5,7 @@ export const ItemDragTypes  = {
 export const paths = {
     main: '/',
     ticket: '/full/:ticketId',
+    notFound: '/404',
+    mainModalCreate: '/create',
+    mainModalEdit: '/edit/:ticketId',
 }

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate, useMatch } from 'react-router-dom';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import Layout from '../../components/Layout';
@@ -8,6 +9,7 @@ import TicketColumn from '../../components/TicketColumn';
 import Modal from '../../components/Modal';
 import TicketForm from '../../components/TicketForm';
 import DragLayer from '../../components/DragLayer';
+import { paths } from '../../constants';
 
 import {ReactComponent as IconPlus} from '../../Icons/plus.svg';
 
@@ -65,17 +67,12 @@ const getDataFromMain = (ticket) => ({
 });
 
 export default function MainPage() {
-    const [currentTicket, setCurrentTicket] = useState(null);
+    const navigate = useNavigate();
+    const modalCreateMatch = useMatch(paths.mainModalCreate);
+    const modalEditMatch = useMatch(paths.mainModalEdit);
+
     const [statuses] = useState(data.statuses);
     const [tickets, setTickets] = useState(data.tickets.map(getDataFromMain));
-
-    const openModal = (id = -1) => {
-        setCurrentTicket(id);
-    };
-
-    const closeModal = () => {
-        setCurrentTicket(null);
-    };
 
     const moveTicket = (sourceCardId, targetColumnStatus) => {
         setTickets((prev) => {
@@ -104,12 +101,17 @@ export default function MainPage() {
                         <TicketColumn
                             key={status}
                             title={status}
-                            selectCurrentTicket={openModal}
                             moveTicket={moveTicket}
                             tickets={tickets.filter((ticket) => ticket.status === status)}
                             button={
                                 status === Status.Done ? undefined : (
-                                    <Button onClick={openModal} type={Type.primary} size={Size.l} icon={<IconPlus />} block>
+                                    <Button
+                                        onClick={navigate.bind(null, paths.mainModalCreate)}
+                                        type={Type.primary}
+                                        size={Size.l}
+                                        icon={<IconPlus />}
+                                        block
+                                    >
                                         Добавить тикет
                                     </Button>
                                 )
@@ -121,11 +123,11 @@ export default function MainPage() {
             </div>
 
             <Modal
-                title={currentTicket > -1 ? 'Редактировать тикет' : 'Создать тикет'}
-                isShow={currentTicket !== null}
-                onClose={closeModal}
+                title={modalEditMatch === null ? 'Создать тикет' : 'Редактировать тикет'}
+                isShow={!(modalCreateMatch === null && modalEditMatch === null)}
+                onClose={navigate.bind(null, -1)}
             >
-                <TicketForm isAddForm />
+                <TicketForm isAddTicketForm />
             </Modal>
         </Layout>
     );

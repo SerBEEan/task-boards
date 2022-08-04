@@ -1,5 +1,6 @@
 import { useRef, useEffect } from 'react';
 import classNames from 'classnames';
+import { useNavigate } from 'react-router-dom';
 import { useDrag } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 import Tag, { Size as TagSize } from '../Tag';
@@ -16,7 +17,8 @@ import styles from './styles.module.css';
 
 
 export default function TicketCard(props) {
-    const { ticket, block = false, selectCurrentTicket } = props;
+    const { ticket, block = false } = props;
+    const navigate = useNavigate();
 
     const moreRef = useRef(null);
     const [_, dragRef, preview] = useDrag({
@@ -31,7 +33,7 @@ export default function TicketCard(props) {
     const clickCard = (e) => {
         const clickedIsOnButtonMore = e.nativeEvent.path.includes(moreRef.current);
         if (!clickedIsOnButtonMore) {
-            selectCurrentTicket?.(ticket.id);
+            navigate(pathInsert(paths.mainModalEdit, { ticketId: ticket.id }));
         }
     };
 
