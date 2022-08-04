@@ -1,7 +1,10 @@
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import classNames from 'classnames';
+import { useDrag } from 'react-dnd';
+import { getEmptyImage } from 'react-dnd-html5-backend';
 import Tag, { Size as TagSize } from '../Tag';
 import Button, { Size, Shape, Type } from '../Button';
+import { ItemDragTypes } from '../../constants';
 
 import {ReactComponent as IconMore} from '../../Icons/more.svg';
 import {ReactComponent as IconAttention} from '../../Icons/attention.svg';
@@ -11,31 +14,32 @@ import styles from './styles.module.css';
 
 
 export default function TicketCard(props) {
-    const {
-        title,
-        tags = [],
-        block = false,
-        hasDescription = false,
-        hasComment = false,
-        selectCurrentTicket,
-    } = props;
+    const { ticket, block = false, selectCurrentTicket } = props;
 
     const moreRef = useRef(null);
+    const [_, dragRef, preview] = useDrag({
+        type: ItemDragTypes.card,
+        item: { ticket },
+    });
+
+    useEffect(() => {
+        preview(getEmptyImage(), { captureDraggingState: true });
+    }, [preview]);
 
     const clickCard = (e) => {
         const clickedIsOnButtonMore = e.nativeEvent.path.includes(moreRef.current);
         if (!clickedIsOnButtonMore) {
-            selectCurrentTicket?.(1);
+            selectCurrentTicket?.(ticket.id);
         }
     };
 
     return (
-        <div className={classNames(styles.taskCard, {[styles.fullWidth]: block})} onClick={clickCard}>
+        <div className={classNames(styles.taskCard, {[styles.fullWidth]: block})} ref={dragRef} onClick={clickCard}>
             <div>
-                <span className={styles.cardTitle}>{title}</span>
+                <span className={styles.cardTitle}>{ticket.title}</span>
                 <div className={styles.cardContent}>
-                    {tags.map((tag) => (
-                        <Tag key={tag.id} color={tag.color} size={TagSize.s} />
+                    {ticket.tags.map((color) => (
+                        <Tag key={color} color={color} size={TagSize.s} />
                     ))}
                 </div>
             </div>
@@ -43,8 +47,8 @@ export default function TicketCard(props) {
             <div className={styles.cardActions}>
                 <Button ref={moreRef} icon={<IconMore />} size={Size.xs} shape={Shape.circle} type={Type.text} />
                 <div className={styles.cardIndicators}>
-                    {hasDescription && <IconAttention />}
-                    {hasComment && <IconComment />}
+                    {ticket.hasDescription && <IconAttention />}
+                    {ticket.hasComment && <IconComment />}
                 </div>
             </div>
         </div>

@@ -17,3 +17,8 @@
     /* 10px */
     gap: 0.625em;
 }
+
+.emptyPlace {
+    /* 48px */
+    height: 3em;
+}

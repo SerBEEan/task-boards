@@ -1,52 +1,41 @@
+import { useDrop } from 'react-dnd';
 import Border from '../Border';
 import TicketCard, {  } from '../TicketCard';
-import { Color } from '../Tag';
+import { ItemDragTypes } from '../../constants';
 
 import styles from './styles.module.css';
 
-export default function TicketColumn({ title, button, selectCurrentTicket }) {
+export default function TicketColumn(props) {
+    const { title, tickets, button, selectCurrentTicket, moveTicket } = props;
+
+    const [collect, dropRef] = useDrop({
+        accept: ItemDragTypes.card,
+        drop: ({ ticket }) => {
+            moveTicket(ticket.id, title);
+        },
+        canDrop: ({ ticket }) => ticket.status !== title,
+        collect: (monitor) => ({
+            isOver: monitor.isOver(),
+            canDrop: monitor.canDrop(),
+        }),
+    });
+
     return (
-        <div className={styles.column}>
+        <div className={styles.column} ref={dropRef}>
             <div className={styles.title}>
                 {title}
             </div>
             <Border block>
                 <div className={styles.content}>
-                    <TicketCard
-                        title="Нарисовать иллюстрации"
-                        tags={[
-                            { id: 0, color: Color.violet },
-                            { id: 1, color: Color.mint },
-                            { id: 2, color: Color.red },
-                            { id: 3, color: Color.orange },
-                            { id: 4, color: Color.blue },
-                            { id: 5, color: Color.green },
-                            { id: 6, color: Color.dark },
-                            { id: 7, color: Color.yellow },
-                        ]}
-                        selectCurrentTicket={selectCurrentTicket}
-                        block
-                        hasDescription
-                        hasComment
-                    />
-                    <TicketCard
-                        title="Нарисовать иллюстрации"
-                        tags={[
-                            { id: 0, color: Color.violet },
-                            { id: 1, color: Color.mint },
-                            { id: 2, color: Color.red },
-                            { id: 3, color: Color.orange },
-                            { id: 4, color: Color.blue },
-                            { id: 5, color: Color.green },
-                            { id: 6, color: Color.dark },
-                            { id: 7, color: Color.yellow },
-                        ]}
-                        selectCurrentTicket={selectCurrentTicket}
-                        block
-                        hasDescription
-                        hasComment
-                    />
-
+                    {tickets.map((ticket) => (
+                        <TicketCard
+                            key={ticket.id}
+                            ticket={ticket}
+                            selectCurrentTicket={selectCurrentTicket}
+                            block
+                        />
+                    ))}
+                    {(collect.isOver && collect.canDrop) && <div className={styles.emptyPlace}></div>}
                     {button}
                 </div>
             </Border>
