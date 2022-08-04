@@ -1,0 +1,13 @@
+.link {
+    display: flex;
+    align-items: center;
+    /* 18px */
+    gap: 1.125em;
+    text-decoration: none;
+    color: inherit;
+    width: max-content;
+}
+
+.link:hover {
+    text-decoration: underline;
+}

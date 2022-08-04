@@ -4,7 +4,9 @@ import { useDrag } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 import Tag, { Size as TagSize } from '../Tag';
 import Button, { Size, Shape, Type } from '../Button';
-import { ItemDragTypes } from '../../constants';
+import Link from '../Link';
+import { ItemDragTypes, paths } from '../../constants';
+import { pathInsert } from '../../utils/pathInsert';
 
 import {ReactComponent as IconMore} from '../../Icons/more.svg';
 import {ReactComponent as IconAttention} from '../../Icons/attention.svg';
@@ -45,7 +47,9 @@ export default function TicketCard(props) {
             </div>
 
             <div className={styles.cardActions}>
-                <Button ref={moreRef} icon={<IconMore />} size={Size.xs} shape={Shape.circle} type={Type.text} />
+                <Link to={pathInsert(paths.ticket, { ticketId: ticket.id })}>
+                    <Button ref={moreRef} icon={<IconMore />} size={Size.xs} shape={Shape.circle} type={Type.text} />
+                </Link>
                 <div className={styles.cardIndicators}>
                     {ticket.hasDescription && <IconAttention />}
                     {ticket.hasComment && <IconComment />}

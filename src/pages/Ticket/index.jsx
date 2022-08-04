@@ -4,6 +4,8 @@ import Button, { Shape, Size, Type as ButtonType } from '../../components/Button
 import TicketForm from '../../components/TicketForm';
 import Menu, { MenuItem } from '../../components/Menu';
 import Modal, { Type } from '../../components/Modal';
+import Link from '../../components/Link';
+import { paths } from '../../constants';
 
 import {ReactComponent as IconMore} from '../../Icons/more.svg';
 import {ReactComponent as IconGoBack} from '../../Icons/goback.svg';
@@ -39,12 +41,9 @@ export default function TicketPage() {
     return (
         <Layout
             header={
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <IconGoBack />
-                    <span style={{ marginLeft: 18 }}>
-                        Вернуться к задачам
-                    </span>
-                </div>
+                <Link to={paths.main} icon={<IconGoBack />}>
+                    Вернуться к задачам
+                </Link>
             }
         >
             <div className={styles.contentHeader}>
