@@ -6,7 +6,7 @@ import { getEmptyImage } from 'react-dnd-html5-backend';
 import Tag, { Size as TagSize } from '../Tag';
 import Button, { Size, Shape, Type } from '../Button';
 import Link from '../Link';
-import { ItemDragTypes, paths } from '../../constants';
+import { ItemDragTypes, Paths } from '../../constants';
 import { pathInsert } from '../../utils/pathInsert';
 
 import {ReactComponent as IconMore} from '../../Icons/more.svg';
@@ -33,7 +33,7 @@ export default function TicketCard(props) {
     const clickCard = (e) => {
         const clickedIsOnButtonMore = e.nativeEvent.path.includes(moreRef.current);
         if (!clickedIsOnButtonMore) {
-            navigate(pathInsert(paths.mainModalEdit, { ticketId: ticket.id }));
+            navigate(pathInsert(Paths.mainModalEdit, { ticketId: ticket.id }));
         }
     };
 
@@ -49,7 +49,7 @@ export default function TicketCard(props) {
             </div>
 
             <div className={styles.cardActions}>
-                <Link to={pathInsert(paths.ticket, { ticketId: ticket.id })}>
+                <Link to={pathInsert(Paths.ticket, { ticketId: ticket.id })}>
                     <Button ref={moreRef} icon={<IconMore />} size={Size.xs} shape={Shape.circle} type={Type.text} />
                 </Link>
                 <div className={styles.cardIndicators}>

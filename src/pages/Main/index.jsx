@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useMatch } from 'react-router-dom';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -9,7 +9,8 @@ import TicketColumn from '../../components/TicketColumn';
 import Modal from '../../components/Modal';
 import TicketForm from '../../components/TicketForm';
 import DragLayer from '../../components/DragLayer';
-import { paths } from '../../constants';
+import { Paths } from '../../constants';
+import { ticketsAPI } from '../../api/ticketsApi';
 
 import {ReactComponent as IconPlus} from '../../Icons/plus.svg';
 
@@ -68,8 +69,8 @@ const getDataFromMain = (ticket) => ({
 
 export default function MainPage() {
     const navigate = useNavigate();
-    const modalCreateMatch = useMatch(paths.mainModalCreate);
-    const modalEditMatch = useMatch(paths.mainModalEdit);
+    const modalCreateMatch = useMatch(Paths.mainModalCreate);
+    const modalEditMatch = useMatch(Paths.mainModalEdit);
 
     const [statuses] = useState(data.statuses);
     const [tickets, setTickets] = useState(data.tickets.map(getDataFromMain));
@@ -82,6 +83,11 @@ export default function MainPage() {
             return newTickets;
         });
     };
+
+    useEffect(() => {
+        const tickets = ticketsAPI.getFilteredTickets([]);
+        tickets.then(console.log);
+    }, []);
 
     return (
         <Layout
@@ -106,7 +112,7 @@ export default function MainPage() {
                             button={
                                 status === Status.Done ? undefined : (
                                     <Button
-                                        onClick={navigate.bind(null, paths.mainModalCreate)}
+                                        onClick={navigate.bind(null, Paths.mainModalCreate)}
                                         type={Type.primary}
                                         size={Size.l}
                                         icon={<IconPlus />}

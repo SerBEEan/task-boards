@@ -4,7 +4,7 @@ import Button, { Size, Type as ButtonType, Color as ButtonColor } from '../Butto
 import Modal from '../Modal';
 import Input, { Type } from '../Input';
 import Border from '../Border';
-import { paths } from '../../constants';
+import { Paths } from '../../constants';
 import { pathInsert } from '../../utils/pathInsert';
 
 import {ReactComponent as IconPlus} from '../../Icons/plus.svg'
@@ -13,13 +13,13 @@ import styles from './styles.module.css';
 
 export function AddComment({ onSave }) {
     const navigation = useNavigate();
-    const modalCreateCommentMatch = useMatch(paths.ticketModalCreateComment);
+    const modalCreateCommentMatch = useMatch(Paths.ticketModalCreateComment);
 
     const [author, setAuthor] = useState('');
     const [content, setContent] = useState('');
 
     const openModal = () => {
-        navigation(pathInsert(paths.ticketModalCreateComment, { ticketId: 1 }));
+        navigation(pathInsert(Paths.ticketModalCreateComment, { ticketId: 1 }));
     };
     const closeModal = () => {
         navigation(-1);

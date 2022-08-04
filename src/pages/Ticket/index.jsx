@@ -5,7 +5,7 @@ import TicketForm from '../../components/TicketForm';
 import Menu, { MenuItem } from '../../components/Menu';
 import Modal, { Type } from '../../components/Modal';
 import Link from '../../components/Link';
-import { paths } from '../../constants';
+import { Paths } from '../../constants';
 
 import {ReactComponent as IconMore} from '../../Icons/more.svg';
 import {ReactComponent as IconGoBack} from '../../Icons/goback.svg';
@@ -41,7 +41,7 @@ export default function TicketPage() {
     return (
         <Layout
             header={
-                <Link to={paths.main} icon={<IconGoBack />}>
+                <Link to={Paths.main} icon={<IconGoBack />}>
                     Вернуться к задачам
                 </Link>
             }
