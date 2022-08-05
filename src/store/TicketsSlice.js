@@ -1,11 +1,9 @@
-import { createAsyncThunk, createEntityAdapter, createSlice, createSelector } from '@reduxjs/toolkit';
+import { createAsyncThunk, createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 import { ticketsAPI } from '../api/ticketsApi';
-import { Filter } from '../constants';
 
 const filteredTicketsAdapter = createEntityAdapter();
 
 const initialState = {
-    filters: [],
     tickets: filteredTicketsAdapter.getInitialState({
         loading: false,
         sending: false,
@@ -15,9 +13,8 @@ const initialState = {
 
 export const getFilteredTickets = createAsyncThunk(
     'tickets/getFilteredTickets',
-    async (_, { getState }) => {
-        const state = getState();
-        return await ticketsAPI.getFilteredTickets(state.ticketsState.filters);
+    async (filter) => {
+        return await ticketsAPI.getFilteredTickets(filter);
     },
 );
 
@@ -77,14 +74,6 @@ const ticketsSlice = createSlice({
     name: 'tickets',
     initialState,
     reducers: {
-        changeFilter: (state, action) => {
-            const { type, value } = action.payload;
-            if (value) {
-                state.filters.push(type);
-            } else {
-                state.filters = state.filters.filter((filter) => filter !== type);
-            }
-        },
         changeTicketStatus: (state, action) => {
             const { id, changes } = action.payload;
             filteredTicketsAdapter.updateOne(state.tickets, { id, changes });
@@ -147,14 +136,6 @@ export const filteredTicketsSelectors = {
     selectSending: (state) => {
         return state.ticketsState.tickets.sending;
     },
-    selectFilters: createSelector(
-        (state) => state.ticketsState.filters,
-        (filters) => ({
-            [Filter.comment]: filters.includes(Filter.comment),
-            [Filter.description]: filters.includes(Filter.description),
-            [Filter.tag]: filters.includes(Filter.tag),
-        })
-    ),
     selectCurrentTicket: (state) => {
         return state.ticketsState.currentTicket;
     },

@@ -78,19 +78,31 @@ function makeRequest(data) {
 }
 
 export function getFilteredTicketsRequest(filters) {
-    let tickets = db.getTickets();
+    const tickets = db.getTickets();
+
+    let ticketIdsByCommentFilter = tickets.map((ticket) => ticket.id);
+    let ticketIdsByDescriptionFilter = tickets.map((ticket) => ticket.id);
+    let ticketIdsByTagFilter = tickets.map((ticket) => ticket.id);
 
     for (const filter of filters) {
         if (filter === Filter.comment) {
-            tickets = tickets.filter((ticket) => ticket.comments.length > 0);
+            ticketIdsByCommentFilter = tickets.filter((ticket) => ticket.comments.length > 0).map((ticket) => ticket.id);
         } else if (filter === Filter.description) {
-            tickets = tickets.filter((ticket) => ticket.description !== '');
+            ticketIdsByDescriptionFilter = tickets.filter((ticket) => ticket.description !== '').map((ticket) => ticket.id);
         } else if (filter === Filter.tag) {
-            tickets = tickets.filter((ticket) => ticket.tags.length > 0);
+            ticketIdsByTagFilter = tickets.filter((ticket) => ticket.tags.length > 0).map((ticket) => ticket.id);
         }
     }
+
+    const filteredTickets = tickets.filter((ticket) => {
+        const isComment = ticketIdsByCommentFilter.includes(ticket.id);
+        const isDescription = ticketIdsByDescriptionFilter.includes(ticket.id);
+        const isTag = ticketIdsByTagFilter.includes(ticket.id);
+
+        return isComment && isDescription && isTag;
+    });
     
-    return makeRequest(tickets.map((ticket) => ({
+    return makeRequest(filteredTickets.map((ticket) => ({
         ...ticket,
         id: Number(ticket.id),
         comments: ticket.comments.map((comment) => ({ ...comment, id: Number(comment.id) }))

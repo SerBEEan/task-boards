@@ -12,6 +12,7 @@ import TicketForm from '../../components/TicketForm';
 import DragLayer from '../../components/DragLayer';
 import Loader from '../../components/Loader';
 import { Paths, Status, Filter } from '../../constants';
+import { useFilterInSearchParams } from '../../utils/useFilterInSearchParams';
 import {
     getFilteredTickets,
     createTicket,
@@ -33,10 +34,10 @@ export default function MainPage() {
     const modalCreateMatch = useMatch(Paths.mainModalCreate);
     const modalEditMatch = useMatch(Paths.mainModalEdit);
     const { ticketId } = useParams();
+    const [filters, changeFilter] = useFilterInSearchParams();
 
     const dispatch = useDispatch();
 
-    const filters = useSelector(filteredTicketsSelectors.selectFilters);
     const tickets = useSelector(filteredTicketsSelectors.selectAll);
     const currentTicket = useSelector(filteredTicketsSelectors.selectCurrentTicket);
     const isLoading = useSelector(filteredTicketsSelectors.selectLoading);
@@ -52,7 +53,7 @@ export default function MainPage() {
     };
 
     const clickOnFilter = (type, value) => {
-        dispatch(filteredTicketsActions.changeFilter({type, value}));
+        changeFilter({ type, value });
     }
 
     const openModal = (status) => {
@@ -93,7 +94,7 @@ export default function MainPage() {
     };
 
     useEffect(() => {
-        dispatch(getFilteredTickets());
+        dispatch(getFilteredTickets(Object.keys(filters)));
     }, [dispatch, filters]);
 
     useEffect(() => {
@@ -106,9 +107,9 @@ export default function MainPage() {
         <Layout
             header={
                 <div className={styles.header}>
-                    <Checkbox label="Комментарий" checked={filters.comment} onChange={clickOnFilter.bind(null, Filter.comment)} />
-                    <Checkbox label="Описание" checked={filters.description} onChange={clickOnFilter.bind(null, Filter.description)} />
-                    <Checkbox label="Тег" checked={filters.tag} onChange={clickOnFilter.bind(null, Filter.tag)} />
+                    <Checkbox label="Комментарий" checked={Boolean(filters.comment)} onChange={clickOnFilter.bind(null, Filter.comment)} />
+                    <Checkbox label="Описание" checked={Boolean(filters.description)} onChange={clickOnFilter.bind(null, Filter.description)} />
+                    <Checkbox label="Тег" checked={Boolean(filters.tag)} onChange={clickOnFilter.bind(null, Filter.tag)} />
                 </div>
             }
             block
