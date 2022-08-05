@@ -61,6 +61,10 @@ export default function MainPage() {
     };
     const closeModal = () => {
         navigate(-1);
+        
+        if (modalEditMatch) {
+            dispatch(filteredTicketsActions.clearCurrentTicket());
+        }
     };
 
     const saveForm = async ({ title, description, tags }) => {
@@ -84,11 +88,7 @@ export default function MainPage() {
 
         if (result.meta.requestStatus === 'fulfilled') {
             dispatch(getFilteredTickets());
-            navigate(-1);
-
-            if (modalEditMatch) {
-                dispatch(filteredTicketsActions.clearCurrentTicket());
-            }
+            closeModal();
         }
     };
 
