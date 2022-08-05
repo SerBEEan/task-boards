@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import classNames from 'classnames';
 import { ModalContainer } from './Container';
 import Button, { Shape, Size, Type as ButtonType } from '../Button';
@@ -36,6 +36,20 @@ export default function Modal(props) {
             onClose?.();
         }
     };
+    
+    useEffect(() => {
+        const listener = (e) => {
+            if (isShow && e.keyCode === 27) {           // 27 === 'Esc'
+                onClose?.();
+            }
+        }
+
+        document.addEventListener('keydown', listener);
+
+        return () => {
+            document.removeEventListener('keydown', listener);
+        }
+    }, [isShow, onClose]);
 
     return (
         <ModalContainer isShow={isShow}>

@@ -146,7 +146,11 @@ export default function MainPage() {
                 isShow={!(modalCreateMatch === null && modalEditMatch === null)}
                 onClose={closeModal}
             >
-                <TicketForm isAddTicketForm onSave={saveForm} currentTicket={currentTicket} />
+                <TicketForm
+                    isWithoutComments
+                    onSave={saveForm}
+                    currentTicket={currentTicket}
+                />
             </Modal>
 
             {(isLoading || isSending) && <Loader />}

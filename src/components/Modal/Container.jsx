@@ -17,18 +17,16 @@ export function ModalContainer({ children, isShow }) {
 
     useEffect(() => {
         if (isShow) {
-            body.style.overflow = 'hidden';
-            // body.style.top = `-${window.scrollY}px`;
-            // body.style.position = 'fixed';
+            body.style.top = `-${window.scrollY}px`;
+            body.style.position = 'fixed';
         } else {
-            body.style.overflow = 'auto';
-            // const scrollY = body.style.top;
+            const scrollY = body.style.top;
 
-            // if (scrollY !== '') {
-            //     body.style.position = '';
-            //     body.style.top = '';
-            //     window.scrollTo(0, parseInt(scrollY || '0') * -1);
-            // }
+            if (scrollY !== '') {
+                body.style.position = '';
+                body.style.top = '';
+                window.scrollTo(0, parseInt(scrollY || '0') * -1);
+            }
         }
     }, [isShow]);
 

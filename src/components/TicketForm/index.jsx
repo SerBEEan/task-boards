@@ -13,7 +13,7 @@ import styles from './styles.module.css';
 export default function TicketForm(props) {
     const {
         block = false,
-        isAddTicketForm = false,
+        isWithoutComments = false,
         isEditMode = true,
         onSave,
         currentTicket,
@@ -106,7 +106,7 @@ export default function TicketForm(props) {
                     />
                 )}
 
-                {comments.map((comment) => (
+                {!isWithoutComments && comments.map((comment) => (
                     <Comment
                         key={comment.id}
                         author={comment.author}
@@ -116,7 +116,7 @@ export default function TicketForm(props) {
                     </Comment>
                 ))} 
 
-                {(!isAddTicketForm && isEditMode) && (
+                {(!isWithoutComments && isEditMode) && (
                     <>
                         <AddComment onSave={addComment} />
                     </>
@@ -126,7 +126,7 @@ export default function TicketForm(props) {
                     <Button
                         size={Size.l}
                         type={ButtonType.primary}
-                        block={isAddTicketForm}
+                        block={isWithoutComments}
                         onClick={saveForm}
                     >
                         Сохранить
