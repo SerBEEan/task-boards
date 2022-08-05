@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react';
 import classNames from 'classnames';
 import Checkbox, { LabelPlacement } from '../Checkbox';
 import Tag from '../Tag';
-import { getEnum } from '../../utils/getEnum';
 
 import styles from './styles.module.css';
 
@@ -12,25 +11,16 @@ export default function SelectTags(props) {
     const [isOpen, setIsOpen] = useState(false);
     const buttonRef = useRef(null);
 
-    const [selected, setSelected] = useState(getEnum(value));
-
     const clickToggle = () => {
         setIsOpen((prev) => !prev);
     };
 
     const clickItem = (e, color) => {
         e.preventDefault();
-
-        setSelected((prev) => {
-            const newSelected = { ...prev };
-            if (newSelected[color]) {
-                delete newSelected[color];
-            } else {
-                newSelected[color] = color;
-            }
-
-            return newSelected;
-        });
+        onChange?.(value.includes(color)
+            ? value.filter((selectedColor) => selectedColor === color)
+            : [...value, color]
+        );
     };
 
     useEffect(() => {
@@ -38,7 +28,6 @@ export default function SelectTags(props) {
             if (!e.path.includes(buttonRef.current)) {
                 if (isOpen) {
                     setIsOpen(false);
-                    onChange?.(Object.keys(selected));
                 }
             }
         };
@@ -48,17 +37,7 @@ export default function SelectTags(props) {
         return () => {
             document.removeEventListener('click', listener);
         };
-    }, [selected, onChange, isOpen]);
-
-    useEffect(() => {
-        setSelected((prev) => {
-            if (Object.keys(prev).toString() === value.toString()) {
-                return prev;
-            }
-
-            return getEnum(value);
-        });
-    }, [value]);
+    }, [isOpen]);
 
     return (
         <div
@@ -80,7 +59,7 @@ export default function SelectTags(props) {
                                 label={<Tag color={tagColor} block />}
                                 labelPlacement={LabelPlacement.left}
                                 block
-                                checked={Boolean(selected[tagColor])}
+                                checked={value.includes(tagColor)}
                             />
                         </li>
                     ))}
