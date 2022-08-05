@@ -6,7 +6,7 @@ const FILTER_PARAM_NAME = 'filters';
 
 export function useFilterInSearchParams() {
     const [searchParams, setSearchParams] = useSearchParams();
-    const [filters, setFilters] = useState({});
+    const [filters, setFilters] = useState(getEnum(paramsToFilterArray(searchParams)));
 
     const changeFilter = useCallback(({ type, value }) => {
         const prepareFilters = { ...filters };
@@ -27,9 +27,19 @@ export function useFilterInSearchParams() {
     }, [filters, searchParams, setSearchParams]);
 
     useEffect(() => {
-        const urlFilter = searchParams.get(FILTER_PARAM_NAME)?.split(',') ?? [];
-        setFilters(getEnum(urlFilter));
+        setFilters((prev) => {
+            const urlFilter = searchParams.get(FILTER_PARAM_NAME)?.split(',') ?? [];
+            if (urlFilter.toString() === Object.keys(prev).toString()) {
+                return prev;
+            } else {
+                return getEnum(urlFilter);
+            }
+        });
     }, [searchParams]);
 
     return [filters, changeFilter];
 }
+
+function paramsToFilterArray(searchParams) {
+    return searchParams.get(FILTER_PARAM_NAME)?.split(',') ?? [];
+};

@@ -6,7 +6,7 @@ import { ItemDragTypes } from '../../constants';
 import styles from './styles.module.css';
 
 export default function TicketColumn(props) {
-    const { title, tickets, button, moveTicket } = props;
+    const { title, tickets, button, moveTicket, clickOnTicketCard } = props;
 
     const [collect, dropRef] = useDrop({
         accept: ItemDragTypes.card,
@@ -31,6 +31,7 @@ export default function TicketColumn(props) {
                         <TicketCard
                             key={ticket.id}
                             ticket={ticket}
+                            clickOnTicketCard={clickOnTicketCard}
                             block
                         />
                     ))}

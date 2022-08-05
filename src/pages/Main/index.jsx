@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useMatch, useParams } from 'react-router-dom';
+import { useMatch, useParams } from 'react-router-dom';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,6 +12,8 @@ import TicketForm from '../../components/TicketForm';
 import DragLayer from '../../components/DragLayer';
 import Loader from '../../components/Loader';
 import { Paths, Status, Filter } from '../../constants';
+import { pathInsert } from '../../utils/pathInsert';
+import { useNavigateWithSearchParams } from '../../utils/useNavigateWithSearchParams';
 import { useFilterInSearchParams } from '../../utils/useFilterInSearchParams';
 import {
     getFilteredTickets,
@@ -30,7 +32,7 @@ import styles from './styles.module.css';
 const STATUSES = [Status.todo, Status.inProgress, Status.done];
 
 export default function MainPage() {
-    const navigate = useNavigate();
+    const navigate = useNavigateWithSearchParams();
     const modalCreateMatch = useMatch(Paths.mainModalCreate);
     const modalEditMatch = useMatch(Paths.mainModalEdit);
     const { ticketId } = useParams();
@@ -56,12 +58,16 @@ export default function MainPage() {
         changeFilter({ type, value });
     }
 
+    const clickOnTicketCard = (ticketId) => {
+        navigate({ to: pathInsert(Paths.mainModalEdit, { ticketId }) });
+    };
+
     const openModal = (status) => {
-        navigate(Paths.mainModalCreate);
+        navigate({ to: Paths.mainModalCreate });
         setSelectedColumn(status);
     };
     const closeModal = () => {
-        navigate(-1);
+        navigate({ to: -1, withoutSearchParams: true });
         
         if (modalEditMatch) {
             dispatch(filteredTicketsActions.clearCurrentTicket());
@@ -123,6 +129,7 @@ export default function MainPage() {
                             title={status}
                             moveTicket={moveTicket}
                             tickets={tickets.filter((ticket) => ticket.status === status)}
+                            clickOnTicketCard={clickOnTicketCard}
                             button={
                                 status === Status.done ? undefined : (
                                     <Button
