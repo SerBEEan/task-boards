@@ -18,7 +18,7 @@ export default function DragLayer() {
     return (
         <div className={styles.dragLayer}>
             <div style={getItemStyles(initialOffset, currentOffset)}>
-                {item && <TicketCard ticket={item.ticket} />}
+                {item.ticket && <TicketCard ticket={item.ticket} />}
             </div>
         </div>
     );
