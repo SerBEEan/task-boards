@@ -20,7 +20,7 @@ export default function TicketForm(props) {
 
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [selectedColors, setSelectedColors] = useState([]);
+    const [tags, setTags] = useState([]);
     const [comments, setComments] = useState([]);
 
     const changeTitle = (value) => {
@@ -31,12 +31,12 @@ export default function TicketForm(props) {
         setDescription(value);
     };
 
-    const changeSelectedColors = (selectedColor) => {
-        setSelectedColors(selectedColor);
+    const changeTags = (selectedColor) => {
+        setTags(selectedColor);
     };
 
     const deleteTag = (color) => {
-        setSelectedColors((prev) => prev.filter((selectedColor) => selectedColor !== color));
+        setTags((prev) => prev.filter((selectedColor) => selectedColor !== color));
     };
 
     const addComment = (newComment) => {
@@ -51,7 +51,7 @@ export default function TicketForm(props) {
     };
 
     const saveForm = () => {
-        onSave?.({ title, description, selectedColors, comments });
+        onSave?.({ title, description, tags, comments });
     };
 
     return (
@@ -73,9 +73,9 @@ export default function TicketForm(props) {
                     disabled={!isEditMode}
                 />
 
-                {selectedColors.length > 0 && (
+                {tags.length > 0 && (
                     <div className={styles.selectedTags}>
-                        {selectedColors.map((color) => (
+                        {tags.map((color) => (
                             <Tag key={color} color={color} onDelete={isEditMode ? deleteTag.bind(null, color) : undefined} />
                         ))}
                     </div>
@@ -84,17 +84,17 @@ export default function TicketForm(props) {
                 {isEditMode && (
                     <SelectTags
                         options={[
-                            { color: Color.violet },
-                            { color: Color.mint },
-                            { color: Color.red },
-                            { color: Color.orange },
-                            { color: Color.blue },
-                            { color: Color.green },
-                            { color: Color.dark },
-                            { color: Color.yellow },
+                            Color.violet,
+                            Color.mint,
+                            Color.red,
+                            Color.orange,
+                            Color.blue,
+                            Color.green,
+                            Color.dark,
+                            Color.yellow,
                         ]}
-                        value={selectedColors}
-                        onChange={changeSelectedColors}
+                        value={tags}
+                        onChange={changeTags}
                     />
                 )}
 

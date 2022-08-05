@@ -12,9 +12,9 @@ export const Paths = {
 };
 
 export const Status = {
-    Todo: 'Todo',
-    InProgress: 'In progress',
-    Done: 'Done',
+    todo: 'Todo',
+    inProgress: 'In progress',
+    done: 'Done',
 };
 
 export const Color = {

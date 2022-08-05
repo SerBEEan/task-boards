@@ -21,10 +21,13 @@ export default function TicketCard(props) {
     const navigate = useNavigate();
 
     const moreRef = useRef(null);
-    const [_, dragRef, preview] = useDrag({
+    const [, dragRef, preview] = useDrag({
         type: ItemDragTypes.card,
         item: { ticket },
     });
+
+    const hasDescription = ticket.description !== '';
+    const hasComment = ticket.comments.length > 0;
 
     useEffect(() => {
         preview(getEmptyImage(), { captureDraggingState: true });
@@ -53,8 +56,8 @@ export default function TicketCard(props) {
                     <Button ref={moreRef} icon={<IconMore />} size={Size.xs} shape={Shape.circle} type={Type.text} />
                 </Link>
                 <div className={styles.cardIndicators}>
-                    {ticket.hasDescription && <IconAttention />}
-                    {ticket.hasComment && <IconComment />}
+                    {hasDescription && <IconAttention />}
+                    {hasComment && <IconComment />}
                 </div>
             </div>
         </div>

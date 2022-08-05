@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useMatch } from 'react-router-dom';
+import { useNavigate, useMatch, useParams } from 'react-router-dom';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { useDispatch, useSelector } from 'react-redux';
 import Layout from '../../components/Layout';
 import Checkbox from '../../components/Checkbox';
 import Button, { Type, Size } from '../../components/Button';
@@ -9,93 +10,93 @@ import TicketColumn from '../../components/TicketColumn';
 import Modal from '../../components/Modal';
 import TicketForm from '../../components/TicketForm';
 import DragLayer from '../../components/DragLayer';
-import { Paths } from '../../constants';
-import { ticketsAPI } from '../../api/ticketsApi';
+import Loader from '../../components/Loader';
+import { Paths, Status, Filter } from '../../constants';
+import {
+    getFilteredTickets,
+    createTicket,
+    updateTicketStatus,
+    updateTicket,
+    filteredTicketsActions,
+    filteredTicketsSelectors,
+} from '../../store/TicketsSlice';
 
 import {ReactComponent as IconPlus} from '../../Icons/plus.svg';
 
 import styles from './styles.module.css';
 
-const Status = {
-    Todo: 'Todo',
-    InProgress: 'In progress',
-    Done: 'Done',
-}
-
-const data = {
-    statuses: [Status.Todo, Status.InProgress, Status.Done],
-    tickets: [
-        {
-            id: 0,
-            title: 'Нарисовать иллюстрации',
-            tags: ['green', 'red'],
-            description: 'hello world',
-            comments: [
-                { author: 'Nick', content: 'hello' },
-            ],
-            status: Status.Todo,
-        },
-        {
-            id: 1,
-            title: 'Нарисовать иллюстрации',
-            tags: ['green', 'red'],
-            description: 'hello world',
-            comments: [
-                { author: 'Nick', content: 'hello' },
-            ],
-            status: Status.InProgress,
-        },
-        {
-            id: 2,
-            title: 'Нарисовать иллюстрации',
-            tags: ['green', 'red'],
-            description: 'hello world',
-            comments: [
-                { author: 'Nick', content: 'hello' },
-            ],
-            status: Status.Done,
-        },
-    ]
-};
-
-const getDataFromMain = (ticket) => ({
-    id: ticket.id,
-    title: ticket.title,
-    tags: ticket.tags,
-    status: ticket.status,
-    hasDescription: ticket.description !== '',
-    hasComments: ticket.comments.length > 0,
-});
+const STATUSES = [Status.todo, Status.inProgress, Status.done];
 
 export default function MainPage() {
     const navigate = useNavigate();
     const modalCreateMatch = useMatch(Paths.mainModalCreate);
     const modalEditMatch = useMatch(Paths.mainModalEdit);
+    const { ticketId } = useParams();
 
-    const [statuses] = useState(data.statuses);
-    const [tickets, setTickets] = useState(data.tickets.map(getDataFromMain));
+    const dispatch = useDispatch();
+
+    const filters = useSelector(filteredTicketsSelectors.selectFilters);
+    const tickets = useSelector(filteredTicketsSelectors.selectAll);
+    const isLoading = useSelector(filteredTicketsSelectors.selectLoading);
+    const isSending = useSelector(filteredTicketsSelectors.selectSending);
+
+    const [selectedColumn, setSelectedColumn] = useState(null);
 
     const moveTicket = (sourceCardId, targetColumnStatus) => {
-        setTickets((prev) => {
-            const newTickets = [...prev];
-            const currentTicketIndex = newTickets.findIndex((ticket) => ticket.id === sourceCardId);
-            newTickets[currentTicketIndex].status = targetColumnStatus;
-            return newTickets;
-        });
+        dispatch(updateTicketStatus({
+            id: sourceCardId,
+            status: targetColumnStatus,
+        }));
     };
 
     useEffect(() => {
-        const tickets = ticketsAPI.getFilteredTickets([]);
-        tickets.then(console.log);
-    }, []);
+        dispatch(getFilteredTickets());
+    }, [dispatch, filters]);
+
+    const clickOnFilter = (type, value) => {
+        dispatch(filteredTicketsActions.changeFilter({type, value}));
+    }
+
+    const openModal = (status) => {
+        navigate(Paths.mainModalCreate);
+        setSelectedColumn(status);
+    };
+    const closeModal = () => {
+        navigate(-1);
+    };
+
+    const saveForm = async ({ title, description, tags }) => {
+        let result = null;
+
+        if (modalCreateMatch) {
+            result = await dispatch(createTicket({
+                status: selectedColumn ?? Status.todo,
+                title,
+                description,
+                tags,
+            }));
+        } else {
+            result = await dispatch(updateTicket({
+                id: Number(ticketId),
+                title,
+                description,
+                tags,
+            }));    
+        }
+
+        if (result.meta.requestStatus === 'fulfilled') {
+            dispatch(getFilteredTickets());
+            navigate(-1);
+        }
+    };
 
     return (
         <Layout
             header={
                 <div className={styles.header}>
-                    <Checkbox label="Комментарий" />
-                    <Checkbox label="Описание" />
-                    <Checkbox label="Тег" />
+                    <Checkbox label="Комментарий" checked={filters.comment} onChange={clickOnFilter.bind(null, Filter.comment)} />
+                    <Checkbox label="Описание" checked={filters.description} onChange={clickOnFilter.bind(null, Filter.description)} />
+                    <Checkbox label="Тег" checked={filters.tag} onChange={clickOnFilter.bind(null, Filter.tag)} />
                 </div>
             }
             block
@@ -103,16 +104,16 @@ export default function MainPage() {
             <div className={styles.content}>
                 <DndProvider backend={HTML5Backend}>
                     <DragLayer />
-                    {statuses.map((status) => (
+                    {STATUSES.map((status) => (
                         <TicketColumn
                             key={status}
                             title={status}
                             moveTicket={moveTicket}
                             tickets={tickets.filter((ticket) => ticket.status === status)}
                             button={
-                                status === Status.Done ? undefined : (
+                                status === Status.done ? undefined : (
                                     <Button
-                                        onClick={navigate.bind(null, Paths.mainModalCreate)}
+                                        onClick={openModal.bind(null, status)}
                                         type={Type.primary}
                                         size={Size.l}
                                         icon={<IconPlus />}
@@ -131,10 +132,12 @@ export default function MainPage() {
             <Modal
                 title={modalEditMatch === null ? 'Создать тикет' : 'Редактировать тикет'}
                 isShow={!(modalCreateMatch === null && modalEditMatch === null)}
-                onClose={navigate.bind(null, -1)}
+                onClose={closeModal}
             >
-                <TicketForm isAddTicketForm />
+                <TicketForm isAddTicketForm onSave={saveForm} />
             </Modal>
+
+            {(isLoading || isSending) && <Loader />}
         </Layout>
     );
 }

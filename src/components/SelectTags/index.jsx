@@ -70,17 +70,17 @@ export default function SelectTags(props) {
             </button>
             <div className={styles.selectDropdown}>
                 <ul className={styles.selectOptions}>
-                    {options.map((option, i) => (
+                    {options.map((tagColor) => (
                         <li
-                            key={option.color}
+                            key={tagColor}
                             className={styles.selectOption}
-                            onClick={(e) => clickItem(e, option.color)}
+                            onClick={(e) => clickItem(e, tagColor)}
                         >
                             <Checkbox
-                                label={<Tag color={option.color} block />}
+                                label={<Tag color={tagColor} block />}
                                 labelPlacement={LabelPlacement.left}
                                 block
-                                checked={Boolean(selected[option.color])}
+                                checked={Boolean(selected[tagColor])}
                             />
                         </li>
                     ))}

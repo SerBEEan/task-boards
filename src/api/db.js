@@ -24,18 +24,16 @@ class DataBase {
 
     updateTicket(id, ticketData) {
         const db = this.__getDb();
-        const newComments = ticketData.comments.map((comment) => {
-            if (comment.id !== undefined) {
-                return comment;
-            }
+        const { title, status, description, tags, comments } = ticketData;
 
-            const id = db.newCommentId;
-            db.newCommentId += 1;
-            return { ...comment, id };
-        })
+        const oldTicketData = db.tickets[id];
+
         db.tickets[id] = {
-            ...ticketData,
-            comments: newComments,
+            title: title === undefined ? oldTicketData.title : title,
+            status: status === undefined ? oldTicketData.status : status,
+            description: description === undefined ? oldTicketData.description : description,
+            tags: tags === undefined ? oldTicketData.tags : tags,
+            comments: comments === undefined ? oldTicketData.comments : this.__indexComments(comments, db),
         };
         this.__setDb(db);
         return id;
@@ -46,6 +44,18 @@ class DataBase {
         delete db.tickets[id];
         this.__setDb(db);
         return id;
+    }
+
+    __indexComments(comments, db) {
+        return comments.map((comment) => {
+            if (comment.id !== undefined) {
+                return comment;
+            }
+
+            const id = db.newCommentId;
+            db.newCommentId += 1;
+            return { ...comment, id };
+        });
     }
 
     __getDb() {
