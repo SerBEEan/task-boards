@@ -88,7 +88,7 @@ export default function MainPage() {
         }
 
         if (result.meta.requestStatus === 'fulfilled') {
-            dispatch(getFilteredTickets());
+            dispatch(getFilteredTickets(Object.keys(filters)));
             closeModal();
         }
     };

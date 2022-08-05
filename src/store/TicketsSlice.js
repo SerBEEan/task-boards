@@ -13,8 +13,8 @@ const initialState = {
 
 export const getFilteredTickets = createAsyncThunk(
     'tickets/getFilteredTickets',
-    async (filter) => {
-        return await ticketsAPI.getFilteredTickets(filter);
+    async (filters) => {
+        return await ticketsAPI.getFilteredTickets(filters);
     },
 );
 
