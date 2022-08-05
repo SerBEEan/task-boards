@@ -10,6 +10,7 @@ const initialState = {
         loading: false,
         sending: false,
     }),
+    currentTicket: null,
 };
 
 export const getFilteredTickets = createAsyncThunk(
@@ -18,6 +19,13 @@ export const getFilteredTickets = createAsyncThunk(
         const state = getState();
         return await ticketsAPI.getFilteredTickets(state.ticketsState.filters);
     },
+);
+
+export const getTicketById = createAsyncThunk(
+    'tickets/getTicketById',
+    async (id) => {
+        return await ticketsAPI.getTicketById(id);
+    }
 );
 
 export const createTicket = createAsyncThunk(
@@ -81,6 +89,9 @@ const ticketsSlice = createSlice({
             const { id, changes } = action.payload;
             filteredTicketsAdapter.updateOne(state.tickets, { id, changes });
         },
+        clearCurrentTicket: (state) => {
+            state.currentTicket = null;
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(getFilteredTickets.pending, (state) => {
@@ -113,6 +124,17 @@ const ticketsSlice = createSlice({
         builder.addCase(updateTicket.rejected, (state) => {
             state.tickets.sending = false;
         });
+
+        builder.addCase(getTicketById.pending, (state) => {
+            state.tickets.loading = true;
+        });
+        builder.addCase(getTicketById.fulfilled, (state, action)  => {
+            state.tickets.loading = false;
+            state.currentTicket = action.payload;
+        });
+        builder.addCase(getTicketById.rejected, (state) => {
+            state.tickets.loading = false;
+        });
     },
 });
 
@@ -133,6 +155,9 @@ export const filteredTicketsSelectors = {
             [Filter.tag]: filters.includes(Filter.tag),
         })
     ),
+    selectCurrentTicket: (state) => {
+        return state.ticketsState.currentTicket;
+    },
     ...filteredTicketsAdapter.getSelectors((state) => state.ticketsState.tickets),
 };
 

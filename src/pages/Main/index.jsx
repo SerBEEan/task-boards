@@ -17,6 +17,7 @@ import {
     createTicket,
     updateTicketStatus,
     updateTicket,
+    getTicketById,
     filteredTicketsActions,
     filteredTicketsSelectors,
 } from '../../store/TicketsSlice';
@@ -37,6 +38,7 @@ export default function MainPage() {
 
     const filters = useSelector(filteredTicketsSelectors.selectFilters);
     const tickets = useSelector(filteredTicketsSelectors.selectAll);
+    const currentTicket = useSelector(filteredTicketsSelectors.selectCurrentTicket);
     const isLoading = useSelector(filteredTicketsSelectors.selectLoading);
     const isSending = useSelector(filteredTicketsSelectors.selectSending);
 
@@ -48,10 +50,6 @@ export default function MainPage() {
             status: targetColumnStatus,
         }));
     };
-
-    useEffect(() => {
-        dispatch(getFilteredTickets());
-    }, [dispatch, filters]);
 
     const clickOnFilter = (type, value) => {
         dispatch(filteredTicketsActions.changeFilter({type, value}));
@@ -87,8 +85,22 @@ export default function MainPage() {
         if (result.meta.requestStatus === 'fulfilled') {
             dispatch(getFilteredTickets());
             navigate(-1);
+
+            if (modalEditMatch) {
+                dispatch(filteredTicketsActions.clearCurrentTicket());
+            }
         }
     };
+
+    useEffect(() => {
+        dispatch(getFilteredTickets());
+    }, [dispatch, filters]);
+
+    useEffect(() => {
+        if (ticketId !== undefined) {
+            dispatch(getTicketById(ticketId));
+        }
+    }, [dispatch, ticketId]);
 
     return (
         <Layout
@@ -134,7 +146,7 @@ export default function MainPage() {
                 isShow={!(modalCreateMatch === null && modalEditMatch === null)}
                 onClose={closeModal}
             >
-                <TicketForm isAddTicketForm onSave={saveForm} />
+                <TicketForm isAddTicketForm onSave={saveForm} currentTicket={currentTicket} />
             </Modal>
 
             {(isLoading || isSending) && <Loader />}

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import classNames from 'classnames';
 import Border from '../Border';
 import Input, { Type } from '../Input';
@@ -16,6 +16,7 @@ export default function TicketForm(props) {
         isAddTicketForm = false,
         isEditMode = true,
         onSave,
+        currentTicket,
     } = props;
 
     const [title, setTitle] = useState('');
@@ -53,6 +54,13 @@ export default function TicketForm(props) {
     const saveForm = () => {
         onSave?.({ title, description, tags, comments });
     };
+
+    useEffect(() => {
+        setTitle(currentTicket?.title ?? '');
+        setDescription(currentTicket?.description ?? '');
+        setTags(currentTicket?.tags ?? []);
+        setComments(currentTicket?.comments ?? []);
+    }, [currentTicket]);
 
     return (
         <Border block={block}>
