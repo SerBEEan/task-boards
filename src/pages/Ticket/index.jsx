@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useMatch, useNavigate } from 'react-router-dom';
+import { useParams, useMatch, useNavigate, Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Layout from '../../components/Layout';
 import Button, { Shape, Size, Type as ButtonType } from '../../components/Button';
@@ -76,6 +76,8 @@ export default function TicketPage() {
 
     return (
         <>
+            {currentTicket === null && <Navigate to={Paths.notFound} />}
+
             <Layout
                 header={
                     <Link to={Paths.main} icon={<IconGoBack />}>

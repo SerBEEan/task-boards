@@ -8,7 +8,7 @@ const initialState = {
         loading: false,
         sending: false,
     }),
-    currentTicket: null,
+    currentTicket: undefined,
 };
 
 export const getFilteredTickets = createAsyncThunk(
@@ -136,12 +136,13 @@ const ticketsSlice = createSlice({
         });
         builder.addCase(getTicketById.rejected, (state) => {
             state.tickets.loading = false;
+            state.currentTicket = null;
         });
 
         builder.addCase(deleteTicket.pending, (state) => {
             state.tickets.sending = true;
         });
-        builder.addCase(deleteTicket.fulfilled, (state, action)  => {
+        builder.addCase(deleteTicket.fulfilled, (state)  => {
             state.tickets.sending = false;
         });
         builder.addCase(deleteTicket.rejected, (state) => {
