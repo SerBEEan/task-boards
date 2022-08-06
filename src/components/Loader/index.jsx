@@ -11,8 +11,8 @@ export default function Loader() {
         const isModalClose = body.style.position === '';
         
         if (isModalClose) {
-            body.style.position = 'fixed';
             body.style.top = `-${window.scrollY}px`;
+            body.style.position = 'fixed';
         }
         
         return () => {
