@@ -11,7 +11,7 @@ import {ReactComponent as IconPlus} from '../../Icons/plus.svg'
 
 import styles from './styles.module.css';
 
-export function AddComment({ onSave }) {
+export function AddComment({ onSave, ticketId }) {
     const navigation = useNavigate();
     const modalCreateCommentMatch = useMatch(Paths.ticketModalCreateComment);
 
@@ -19,7 +19,7 @@ export function AddComment({ onSave }) {
     const [content, setContent] = useState('');
 
     const openModal = () => {
-        navigation(pathInsert(Paths.ticketModalCreateComment, { ticketId: 1 }));
+        navigation(pathInsert(Paths.ticketModalCreateComment, { ticketId }));
     };
     const closeModal = () => {
         navigation(-1);

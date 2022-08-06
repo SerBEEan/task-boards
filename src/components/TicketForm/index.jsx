@@ -41,14 +41,15 @@ export default function TicketForm(props) {
     };
 
     const addComment = (newComment) => {
-        setComments((prev) => {
-            const lastId = prev[prev.length - 1]?.id ?? -1;
-            return [...prev, { ...newComment, id: lastId + 1}];
-        });
+        setComments((prev) => [...prev, newComment]);
     };
 
-    const deleteComment = (id) => {
-        setComments((prev) => prev.filter((comment) => comment.id !== id));
+    const deleteComment = (index) => {
+        setComments((prev) => {
+            const newComments = [...prev];
+            newComments.splice(index, 1);
+            return newComments;
+        });
     };
 
     const saveForm = () => {
@@ -106,19 +107,19 @@ export default function TicketForm(props) {
                     />
                 )}
 
-                {!isWithoutComments && comments.map((comment) => (
+                {!isWithoutComments && comments.map((comment, index) => (
                     <Comment
-                        key={comment.id}
+                        key={index}
                         author={comment.author}
-                        onDelete={deleteComment.bind(null, comment.id)}
+                        onDelete={isEditMode ? deleteComment.bind(null, index) : undefined}
                     >
                         {comment.content}
                     </Comment>
                 ))} 
 
-                {(!isWithoutComments && isEditMode) && (
+                {(!isWithoutComments && isEditMode && currentTicket) && (
                     <>
-                        <AddComment onSave={addComment} />
+                        <AddComment onSave={addComment} ticketId={currentTicket.id} />
                     </>
                 )}
 
