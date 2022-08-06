@@ -124,13 +124,11 @@ export default function TicketForm(props) {
                 ))} 
 
                 {(!isWithoutComments && isEditMode && currentTicket) && (
-                    <>
-                        <AddComment
-                            name={COMMENTS_KEY}
-                            control={control}
-                            ticketId={currentTicket.id}
-                        />
-                    </>
+                    <AddComment
+                        name={COMMENTS_KEY}
+                        control={control}
+                        ticketId={currentTicket.id}
+                    />
                 )}
 
                 {isEditMode && (

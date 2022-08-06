@@ -97,6 +97,7 @@ export default function MainPage() {
 
         if (result.meta.requestStatus === 'fulfilled') {
             dispatch(getFilteredTickets(Object.keys(filters)));
+            controller?.resetForm();
             closeModal();
         }
     };

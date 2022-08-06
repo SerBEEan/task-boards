@@ -5,6 +5,11 @@ import {ReactComponent as IconClose} from '../../Icons/close.svg';
 import styles from './styles.module.css';
 
 export default function Comment({ children, author, onDelete }) {
+    const clickOnDelete = (e) => {
+        e.preventDefault();
+        onDelete?.();
+    };
+
     return (
         <div className={styles.comment}>
             <div className={styles.commentHeader}>
@@ -15,7 +20,7 @@ export default function Comment({ children, author, onDelete }) {
                         size={Size.xs}
                         shape={Shape.circle}
                         icon={<IconClose />}
-                        onClick={onDelete}
+                        onClick={clickOnDelete}
                     />
                 )}
             </div>
