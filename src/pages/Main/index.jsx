@@ -47,6 +47,8 @@ export default function MainPage() {
 
     const [selectedColumn, setSelectedColumn] = useState(null);
 
+    const [controller, setController] = useState({ resetForm: undefined });
+
     const moveTicket = (sourceCardId, targetColumnStatus) => {
         dispatch(updateTicketStatus({
             id: sourceCardId,
@@ -68,7 +70,7 @@ export default function MainPage() {
     };
     const closeModal = () => {
         navigate({ to: -1, withoutSearchParams: true });
-        
+        controller?.resetForm();
         if (modalEditMatch) {
             dispatch(filteredTicketsActions.clearCurrentTicket());
         }
@@ -158,6 +160,7 @@ export default function MainPage() {
                     isWithoutComments
                     onSave={saveForm}
                     currentTicket={currentTicket}
+                    changeController={setController}
                 />
             </Modal>
 

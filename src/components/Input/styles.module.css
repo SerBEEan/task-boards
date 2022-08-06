@@ -29,3 +29,9 @@ textarea::-webkit-scrollbar-thumb {
     border-radius: 12px;
     background-color: #A9A9A9;
 }
+
+.errorMessage {
+    /* 12px */
+    font-size: 0.75em;
+    color: #E32636;
+}

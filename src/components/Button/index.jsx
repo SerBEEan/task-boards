@@ -46,6 +46,7 @@ function Button(props, ref) {
         color = Color.default,
         onClick,
         className,
+        isSubmit = false,
     } = props;
 
     return (
@@ -62,6 +63,7 @@ function Button(props, ref) {
             ref={ref}
             style={{ gap: gutter }}
             onClick={onClick}
+            type={isSubmit ? 'submit' : undefined}
         >
             {icon && (
                 <span className={styles.iconContainer}>

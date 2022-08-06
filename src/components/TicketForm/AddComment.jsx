@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import { useMatch, useNavigate } from 'react-router-dom';
+import { useController, useForm } from 'react-hook-form';
 import Button, { Size, Type as ButtonType, Color as ButtonColor } from '../Button';
 import Modal from '../Modal';
 import Input, { Type } from '../Input';
@@ -11,33 +11,34 @@ import {ReactComponent as IconPlus} from '../../Icons/plus.svg'
 
 import styles from './styles.module.css';
 
-export function AddComment({ onSave, ticketId }) {
+const AUTHOR_KEY = 'author';
+const CONTENT_KEY = 'content';
+
+
+export function AddComment({ ticketId, control, name }) {
     const navigation = useNavigate();
     const modalCreateCommentMatch = useMatch(Paths.ticketModalCreateComment);
 
-    const [author, setAuthor] = useState('');
-    const [content, setContent] = useState('');
+    const { field: { value, onChange } } = useController({ name, control, defaultValue: [] });
+    const { register, handleSubmit, formState: { errors }, reset } = useForm();
 
-    const openModal = () => {
+    const openModal = (e) => {
+        e.preventDefault();
         navigation(pathInsert(Paths.ticketModalCreateComment, { ticketId }));
     };
     const closeModal = () => {
         navigation(-1);
-        setAuthor('');
-        setContent('');
+        reset();
     };
 
-    const changeAuthor = (value) => {
-        setAuthor(value);
-    };
-
-    const changeContent = (value) => {
-        setContent(value);
-    };
-
-    const saveComment = () => {
-        onSave?.({ author, content });
+    const saveComment = ({ author, content }, e) => {
+        onChange([...value, { author, content }]);
         closeModal();
+    };
+
+    const submitComment = (e) => {
+        e.stopPropagation();
+        handleSubmit(saveComment)(e);
     };
 
     return (
@@ -48,18 +49,32 @@ export function AddComment({ onSave, ticketId }) {
                 onClose={closeModal}
             >
                 <Border>
-                    <div className={styles.formContent}>
-                        <Input value={author} onChange={changeAuthor} placeholder="Имя" block />
-                        <Input value={content} onChange={changeContent} placeholder="Комментарий" type={Type.textarea} block />
+                    <form
+                        className={styles.formContent}
+                        onSubmit={submitComment}
+                    >
+                        <Input
+                            registered={register(AUTHOR_KEY, { required: 'Введите имя' })}
+                            errorMessage={errors[AUTHOR_KEY]?.message}
+                            placeholder="Имя"
+                            block
+                        />
+                        <Input
+                            registered={register(CONTENT_KEY, { required: 'Введите комментарий' })}
+                            errorMessage={errors[CONTENT_KEY]?.message}
+                            placeholder="Комментарий"
+                            type={Type.textarea}
+                            block
+                        />
                         <Button
                             size={Size.l}
                             type={ButtonType.primary}
-                            onClick={saveComment}
                             block
+                            isSubmit
                         >
                             Сохранить
                         </Button>
-                    </div>
+                    </form>
                 </Border>
             </Modal>
             <Button

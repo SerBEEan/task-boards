@@ -13,34 +13,34 @@ export default function Input(props) {
         type = Type.input,
         block = false,
         placeholder,
-        value,
-        onChange,
-        disabled,
+        disabled = false,
+        registered,
+        errorMessage,
     } = props;
-
-    const changeValue = (e) => {
-        onChange?.(e.target.value);
-    };
 
     if (type === Type.input) {
         return (
-            <input
-                className={classNames(styles.input, {[styles.fullWidth]: block})}
-                placeholder={placeholder}
-                value={value}
-                onChange={changeValue}
-                disabled={disabled}
-            />
+            <div>
+                <input
+                    className={classNames(styles.input, {[styles.fullWidth]: block})}
+                    placeholder={placeholder}
+                    disabled={disabled}
+                    {...registered}
+                />
+                {Boolean(errorMessage) && <p className={styles.errorMessage}>{errorMessage}</p>}
+            </div>
         );
     }
 
     return (
-        <textarea
-            className={classNames(styles.textarea, {[styles.fullWidth]: block})}
-            placeholder={placeholder}
-            value={value}
-            onChange={changeValue}
-            disabled={disabled}
-        />
+        <div>
+            <textarea
+                className={classNames(styles.textarea, {[styles.fullWidth]: block})}
+                placeholder={placeholder}
+                disabled={disabled}
+                {...registered}
+            />
+            {Boolean(errorMessage) && <p className={styles.errorMessage}>{errorMessage}</p>}
+        </div>
     );
 }

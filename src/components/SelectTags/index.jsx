@@ -1,23 +1,32 @@
 import { useState, useEffect, useRef } from 'react';
 import classNames from 'classnames';
+import { useController } from 'react-hook-form';
 import Checkbox, { LabelPlacement } from '../Checkbox';
 import Tag from '../Tag';
 
 import styles from './styles.module.css';
 
 export default function SelectTags(props) {
-    const { options = [], block = false, value = [], onChange } = props;
+    const {
+        options = [],
+        block = false,
+        control,
+        name,
+    } = props;
+    
+    const { field: { value, onChange } } = useController({ name, control, defaultValue: [] });
 
     const [isOpen, setIsOpen] = useState(false);
     const buttonRef = useRef(null);
 
-    const clickToggle = () => {
+    const clickToggle = (e) => {
+        e.preventDefault();
         setIsOpen((prev) => !prev);
     };
 
     const clickItem = (e, color) => {
         e.preventDefault();
-        onChange?.(value.includes(color)
+        onChange(value.includes(color)
             ? value.filter((selectedColor) => selectedColor === color)
             : [...value, color]
         );

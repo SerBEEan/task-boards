@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import classNames from 'classnames';
+import { useForm } from 'react-hook-form';
 import Border from '../Border';
 import Input, { Type } from '../Input';
 import SelectTags from '../SelectTags';
@@ -10,6 +11,22 @@ import Comment from '../Comment';
 
 import styles from './styles.module.css';
 
+const TITLE_KEY = 'title';
+const DESCRIPTION_KEY = 'description';
+const TAGS_KEY = 'tags';
+const COMMENTS_KEY = 'comments';
+
+const OPTIONS = [
+    Color.violet,
+    Color.mint,
+    Color.red,
+    Color.orange,
+    Color.blue,
+    Color.green,
+    Color.dark,
+    Color.yellow,
+];
+
 export default function TicketForm(props) {
     const {
         block = false,
@@ -17,72 +34,70 @@ export default function TicketForm(props) {
         isEditMode = true,
         onSave,
         currentTicket,
+        changeController,
     } = props;
 
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
-    const [tags, setTags] = useState([]);
-    const [comments, setComments] = useState([]);
+    const { register, watch, handleSubmit, formState: { errors }, setValue, control, reset } = useForm({ defaultValues: {
+        [TITLE_KEY]: '',
+        [DESCRIPTION_KEY]: '',
+        [TAGS_KEY]: [],
+        [COMMENTS_KEY]: [],
+    } });
 
-    const changeTitle = (value) => {
-        setTitle(value);
-    };
-
-    const changeDescription = (value) => {
-        setDescription(value);
-    };
-
-    const changeTags = (selectedColor) => {
-        setTags(selectedColor);
-    };
+    const tags = watch(TAGS_KEY);
+    const comments = watch(COMMENTS_KEY);
 
     const deleteTag = (color) => {
-        setTags((prev) => prev.filter((selectedColor) => selectedColor !== color));
-    };
-
-    const addComment = (newComment) => {
-        setComments((prev) => [...prev, newComment]);
+        const newTags = tags.filter((selectedColor) => selectedColor !== color);
+        setValue(TAGS_KEY, newTags);
     };
 
     const deleteComment = (index) => {
-        setComments((prev) => {
-            const newComments = [...prev];
-            newComments.splice(index, 1);
-            return newComments;
-        });
+        const newComments = [...comments];
+        newComments.splice(index, 1);
+        setValue(COMMENTS_KEY, newComments);
     };
 
-    const saveForm = () => {
+    const saveForm = ({ title, description, tags, comments }) => {
         onSave?.({ title, description, tags, comments });
     };
 
     useEffect(() => {
-        setTitle(currentTicket?.title ?? '');
-        setDescription(currentTicket?.description ?? '');
-        setTags(currentTicket?.tags ?? []);
-        setComments(currentTicket?.comments ?? []);
-    }, [currentTicket]);
+        setValue(TITLE_KEY, currentTicket?.title ?? '');
+        setValue(DESCRIPTION_KEY, currentTicket?.description ?? '');
+        setValue(TAGS_KEY, currentTicket?.tags ?? []);
+        setValue(COMMENTS_KEY, currentTicket?.comments ?? []);
+    }, [currentTicket, setValue]);
+
+    useEffect(() => {
+        changeController?.((prev) => ({
+            ...prev,
+            resetForm: () => reset(),
+        }));
+    }, [changeController, reset]);
 
     return (
         <Border block={block}>
-            <div className={classNames(styles.formContent, {[styles.fullWidth]: block})}>
+            <form
+                className={classNames(styles.formContent, {[styles.fullWidth]: block})}
+                onSubmit={handleSubmit(saveForm)}
+            >
                 <Input
                     placeholder="Название"
                     block
-                    value={title}
-                    onChange={changeTitle}
                     disabled={!isEditMode}
+                    registered={register(TITLE_KEY, { required: 'Введите название' })}
+                    errorMessage={errors[TITLE_KEY]?.message}
                 />
                 <Input
                     placeholder="Описание"
                     type={Type.textarea}
                     block
-                    value={description}
-                    onChange={changeDescription}
                     disabled={!isEditMode}
+                    registered={register(DESCRIPTION_KEY)}
                 />
 
-                {tags.length > 0 && (
+                {tags?.length > 0 && (
                     <div className={styles.selectedTags}>
                         {tags.map((color) => (
                             <Tag key={color} color={color} onDelete={isEditMode ? deleteTag.bind(null, color) : undefined} />
@@ -92,22 +107,13 @@ export default function TicketForm(props) {
 
                 {isEditMode && (
                     <SelectTags
-                        options={[
-                            Color.violet,
-                            Color.mint,
-                            Color.red,
-                            Color.orange,
-                            Color.blue,
-                            Color.green,
-                            Color.dark,
-                            Color.yellow,
-                        ]}
-                        value={tags}
-                        onChange={changeTags}
+                        options={OPTIONS}
+                        control={control}
+                        name={TAGS_KEY}
                     />
                 )}
 
-                {!isWithoutComments && comments.map((comment, index) => (
+                {!isWithoutComments && comments?.map((comment, index) => (
                     <Comment
                         key={index}
                         author={comment.author}
@@ -119,7 +125,11 @@ export default function TicketForm(props) {
 
                 {(!isWithoutComments && isEditMode && currentTicket) && (
                     <>
-                        <AddComment onSave={addComment} ticketId={currentTicket.id} />
+                        <AddComment
+                            name={COMMENTS_KEY}
+                            control={control}
+                            ticketId={currentTicket.id}
+                        />
                     </>
                 )}
 
@@ -128,12 +138,12 @@ export default function TicketForm(props) {
                         size={Size.l}
                         type={ButtonType.primary}
                         block={isWithoutComments}
-                        onClick={saveForm}
+                        isSubmit
                     >
                         Сохранить
                     </Button>
                 )}
-            </div>
+            </form>
         </Border>
     );
 }
