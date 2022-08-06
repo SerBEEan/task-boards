@@ -86,7 +86,7 @@ export default function TicketPage() {
                 }
             >
                 <div className={styles.contentHeader}>
-                    <span>Todo</span>
+                    <span>{currentTicket?.status ?? 'Статус'}</span>
                     {!isEditMode && (
                         <Menu
                             trigger={

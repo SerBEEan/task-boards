@@ -3,12 +3,14 @@ import { ticketsAPI } from '../api/ticketsApi';
 
 const filteredTicketsAdapter = createEntityAdapter();
 
+const DEFAULT_CURRENT_TICKET = undefined;
+
 const initialState = {
     tickets: filteredTicketsAdapter.getInitialState({
         loading: false,
         sending: false,
     }),
-    currentTicket: undefined,
+    currentTicket: DEFAULT_CURRENT_TICKET,
 };
 
 export const getFilteredTickets = createAsyncThunk(
@@ -92,7 +94,7 @@ const ticketsSlice = createSlice({
             filteredTicketsAdapter.updateOne(state.tickets, { id, changes });
         },
         clearCurrentTicket: (state) => {
-            state.currentTicket = null;
+            state.currentTicket = DEFAULT_CURRENT_TICKET;
         },
     },
     extraReducers: (builder) => {

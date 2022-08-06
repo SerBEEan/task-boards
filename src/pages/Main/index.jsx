@@ -64,16 +64,16 @@ export default function MainPage() {
         navigate({ to: pathInsert(Paths.mainModalEdit, { ticketId }) });
     };
 
-    const openModal = (status) => {
+    const openCreateModal = (status) => {
         navigate({ to: Paths.mainModalCreate });
         setSelectedColumn(status);
+        controller?.resetForm();
     };
     const closeModal = () => {
-        navigate({ to: -1, withoutSearchParams: true });
-        controller?.resetForm();
         if (modalEditMatch) {
             dispatch(filteredTicketsActions.clearCurrentTicket());
         }
+        navigate({ to: -1, withoutSearchParams: true });
     };
 
     const saveForm = async ({ title, description, tags }) => {
@@ -135,7 +135,7 @@ export default function MainPage() {
                             button={
                                 status === Status.done ? undefined : (
                                     <Button
-                                        onClick={openModal.bind(null, status)}
+                                        onClick={openCreateModal.bind(null, status)}
                                         type={Type.primary}
                                         size={Size.l}
                                         icon={<IconPlus />}
