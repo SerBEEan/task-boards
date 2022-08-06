@@ -10,6 +10,8 @@ if (lsDb === null) {
     const answer = window.confirm('Загрузить тестовую БД?');
     if (answer) {
         localStorage.setItem(TICKETS_KEY, JSON.stringify(backupDataBase));
+    } else {
+        localStorage.setItem(TICKETS_KEY, DEFAULT_DB);
     }
 }
 
