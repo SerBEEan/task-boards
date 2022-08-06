@@ -9,7 +9,7 @@ import Modal, { Type } from '../../components/Modal';
 import Link from '../../components/Link';
 import Loader from '../../components/Loader';
 import { Paths } from '../../constants';
-import { getTicketById, updateTicket, deleteTicket, filteredTicketsSelectors } from '../../store/TicketsSlice';
+import { getTicketById, updateTicket, deleteTicket, filteredTicketsActions, filteredTicketsSelectors } from '../../store/TicketsSlice';
 
 import {ReactComponent as IconMore} from '../../Icons/more.svg';
 import {ReactComponent as IconGoBack} from '../../Icons/goback.svg';
@@ -67,6 +67,12 @@ export default function TicketPage() {
     useEffect(() => {
         dispatch(getTicketById(ticketId));
     }, [dispatch, ticketId]);
+
+    useEffect(() => {
+        return () => {
+            dispatch(filteredTicketsActions.clearCurrentTicket());
+        };
+    }, [dispatch]);
 
     useEffect(() => {
         if (modalCreateCommentMatch !== null) {
