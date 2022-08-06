@@ -69,6 +69,19 @@ export const updateTicket = createAsyncThunk(
     },
 );
 
+export const deleteTicket = createAsyncThunk(
+    'tickets/deleteTicket',
+    async ({ id }) => {
+        const response = await ticketsAPI.deleteTicket(id);
+
+        if (typeof response !== 'number') {
+            throw new Error('No success');
+        }
+
+        return response;
+    },
+);
+
 
 const ticketsSlice = createSlice({
     name: 'tickets',
@@ -123,6 +136,16 @@ const ticketsSlice = createSlice({
         });
         builder.addCase(getTicketById.rejected, (state) => {
             state.tickets.loading = false;
+        });
+
+        builder.addCase(deleteTicket.pending, (state) => {
+            state.tickets.sending = true;
+        });
+        builder.addCase(deleteTicket.fulfilled, (state, action)  => {
+            state.tickets.sending = false;
+        });
+        builder.addCase(deleteTicket.rejected, (state) => {
+            state.tickets.sending = false;
         });
     },
 });

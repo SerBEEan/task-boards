@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useMatch } from 'react-router-dom';
+import { useParams, useMatch, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Layout from '../../components/Layout';
 import Button, { Shape, Size, Type as ButtonType } from '../../components/Button';
@@ -9,7 +9,7 @@ import Modal, { Type } from '../../components/Modal';
 import Link from '../../components/Link';
 import Loader from '../../components/Loader';
 import { Paths } from '../../constants';
-import { getTicketById, updateTicket, filteredTicketsSelectors } from '../../store/TicketsSlice';
+import { getTicketById, updateTicket, deleteTicket, filteredTicketsSelectors } from '../../store/TicketsSlice';
 
 import {ReactComponent as IconMore} from '../../Icons/more.svg';
 import {ReactComponent as IconGoBack} from '../../Icons/goback.svg';
@@ -18,12 +18,13 @@ import styles from './styles.module.css';
 
 export default function TicketPage() {
     const dispatch = useDispatch();
-
+    
+    const navigate = useNavigate();
     const { ticketId } = useParams();
     const modalCreateCommentMatch = useMatch(Paths.ticketModalCreateComment);
     
     const [isEditMode, setIsEditMode] = useState(false);
-    const [isModalShow, setIsModalShow] = useState(false);
+    const [isDeleteModalShow, setIsDeleteModalShow] = useState(false);
 
     const currentTicket = useSelector(filteredTicketsSelectors.selectCurrentTicket);
     const isLoading = useSelector(filteredTicketsSelectors.selectLoading);
@@ -49,16 +50,18 @@ export default function TicketPage() {
     };
 
     const openModalDelete = () => {
-        setIsModalShow(true);
+        setIsDeleteModalShow(true);
     };
-
     const closeModalDelete = () => {
-        setIsModalShow(false);
+        setIsDeleteModalShow(false);
     };
 
-    const deleteTicket = () => {
-        console.log('delete', currentTicket.id);
-        closeModalDelete();
+    const clickOnDeleteTicket = async () => {
+        const result = await dispatch(deleteTicket({ id: Number(ticketId) }));
+
+        if (result.meta.requestStatus === 'fulfilled') {
+            navigate(Paths.main);
+        }
     };
 
     useEffect(() => {
@@ -108,10 +111,10 @@ export default function TicketPage() {
                     />
                     <Modal
                         title="Удалить тикет?"
-                        isShow={isModalShow}
+                        isShow={isDeleteModalShow}
                         onClose={closeModalDelete}
                         type={Type.confirm}
-                        onOk={deleteTicket}
+                        onOk={clickOnDeleteTicket}
                         onCancel={closeModalDelete}
                     />
                 </div>

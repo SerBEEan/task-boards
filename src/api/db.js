@@ -69,7 +69,7 @@ class DataBase {
 const db = new DataBase();
 
 
-function makeRequest(data) {
+function makeResponse(data) {
     return new Promise((resolve) => {
         setTimeout(() => {
             resolve(data);
@@ -102,7 +102,7 @@ export function getFilteredTicketsRequest(filters) {
         return isComment && isDescription && isTag;
     });
     
-    return makeRequest(filteredTickets.map((ticket) => ({
+    return makeResponse(filteredTickets.map((ticket) => ({
         ...ticket,
         id: Number(ticket.id),
         comments: ticket.comments.map((comment) => ({ ...comment, id: Number(comment.id) }))
@@ -111,7 +111,7 @@ export function getFilteredTicketsRequest(filters) {
 
 export function getTicketByIdRequest(id) {
     const ticket = db.getTickets().find((ticket) => ticket.id === String(id));
-    return makeRequest(ticket ? {
+    return makeResponse(ticket ? {
         ...ticket,
         id: Number(ticket.id),
         comments: ticket.comments.map((comment) => ({ ...comment, id: Number(comment.id) })),
@@ -119,7 +119,7 @@ export function getTicketByIdRequest(id) {
 }
 
 export function createTicketRequest(data) {
-    return makeRequest(db.createTicket(buildTicketModel({
+    return makeResponse(db.createTicket(buildTicketModel({
         title: data.title,
         description: data.description,
         status: data.status,
@@ -129,7 +129,7 @@ export function createTicketRequest(data) {
 }
 
 export function updateTicketRequest(id, data) {
-    return makeRequest(db.updateTicket(id, buildTicketModel({
+    return makeResponse(db.updateTicket(id, buildTicketModel({
         title: data.title,
         description: data.description,
         status: data.status,
@@ -139,5 +139,5 @@ export function updateTicketRequest(id, data) {
 }
 
 export function deleteTicketRequest(id) {
-    return makeRequest(db.removeTicker(id));
+    return makeResponse(db.removeTicker(id));
 }
