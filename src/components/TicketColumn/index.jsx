@@ -1,6 +1,7 @@
 import { useDrop } from 'react-dnd';
 import Border from '../Border';
 import TicketCard, {  } from '../TicketCard';
+import Empty from '../../components/Empty';
 import { ItemDragTypes } from '../../constants';
 
 import styles from './styles.module.css';
@@ -27,14 +28,18 @@ export default function TicketColumn(props) {
             </div>
             <Border block>
                 <div className={styles.content}>
-                    {tickets.map((ticket) => (
-                        <TicketCard
-                            key={ticket.id}
-                            ticket={ticket}
-                            clickOnTicketCard={clickOnTicketCard}
-                            block
-                        />
-                    ))}
+                    {tickets.length === 0 ? (
+                        <Empty description="Задачи отсутствуют" />
+                    ) : (
+                        tickets.map((ticket) => (
+                            <TicketCard
+                                key={ticket.id}
+                                ticket={ticket}
+                                clickOnTicketCard={clickOnTicketCard}
+                                block
+                            />
+                        ))
+                    )}
                     {(collect.isOver && collect.canDrop) && <div className={styles.emptyPlace}></div>}
                     {button}
                 </div>

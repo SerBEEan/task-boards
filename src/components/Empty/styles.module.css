@@ -1,0 +1,21 @@
+.empty {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.iconContainer {
+    width: max-content;
+}
+
+.iconContainer * {
+    /* 72px */
+    width: 4.5em;
+    height: 4.5em;
+}
+
+.description {
+    /* 14px */
+    font-size: 0.875em;
+}
