@@ -1,8 +1,18 @@
+import backupDataBase from './backupDataBase.json'
 import { Filter } from '../constants';
 import { buildTicketModel } from '../utils/buildModel';
 
 const TICKETS_KEY = 'tickets';
 const DEFAULT_DB = JSON.stringify({ newTicketId: 1, newCommentId: 1, tickets: {} });
+
+const lsDb = localStorage.getItem(TICKETS_KEY);
+if (lsDb === null) {
+    const answer = window.confirm('Загрузить тестовую БД?');
+    if (answer) {
+        localStorage.setItem(TICKETS_KEY, JSON.stringify(backupDataBase));
+    }
+}
+
 
 class DataBase {
     createTicket(ticketData) {
